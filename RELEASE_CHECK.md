@@ -1,11 +1,11 @@
 # Release check — paper-j1-multiverse-jlps-replication
 
-Date: 2026-09-17T14:32:28Z. Snapshot downloaded anonymously (no credentials, no gh CLI) from `https://codeload.github.com/sokubo/paper-j1-multiverse-jlps-replication/tar.gz/main`.
+Date: 2026-09-17T20:36:33Z. Snapshot downloaded anonymously (no credentials, no gh CLI) from `https://codeload.github.com/sokubo/paper-j1-multiverse-jlps-replication/tar.gz/main`.
 
-- ref: `main`; commit: `fa0eb1a24ac9e6380705a58979d13f2cd7a43df1`
-- archive SHA-256: `ae241365e733e74fc31ad460b7309a7be161ba15d77283d5f14abfb19444aa2b`
+- ref: `main`; commit: `733bca6b9dd051a6348f6d71573d1744c77870de`
+- archive SHA-256: `785e47e8efc493867c851c10d19a6ceed92afa293766cf0fd968ac1472fbedff`
 - files in snapshot (excluding FILE_MANIFEST.txt and RELEASE_CHECK*): 36; listed in FILE_MANIFEST.txt: 36; missing from snapshot: 0; not listed in manifest: 0
-- clean run: documented sequence executed in a clean copy with shipped outputs set aside (109s); log and sessionInfo kept; comparison below
+- clean run: documented sequence executed in a clean copy with shipped outputs set aside (68s); log and sessionInfo kept; comparison below
 - staged figures: figure staging not run
 
 ## Environment of the clean run
