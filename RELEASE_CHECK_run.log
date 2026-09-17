@@ -1,0 +1,813 @@
+== analysis/Rscript j1_make_synthetic.R output/synthetic_regen/j1_synth_wide.rds 23:30:39
+synthetic written: 8146 x 33 -> output/synthetic_regen/j1_synth_wide.rds 
+synthetic input regenerated identical() to shipped: TRUE 
+== analysis/Rscript j1_jlps_application.R synthetic/j1_synth_wide.rds output 23:30:39
+   w1: all variables found
+   w5: all variables found
+!! w13: not found: lq44
+     candidates for lq44: lq44re_2
+   fixed: all variables found
+cohorts: 2007=4800  2011=963  2019=2383  (unassigned 0)
+input value ranges (min..max, non-missing n):
+   zq23a     1..6 (n=4800)
+   dq69a     1..6 (n=963)
+   lq72a     1..6 (n=2383)
+   zq17      1..5 (n=4800)
+   dq61      1..5 (n=963)
+   lq65      1..5 (n=2383)
+   zq47a     2..13 (n=4800)
+   dq35a     2..12 (n=963)
+   lq37a     2..13 (n=2383)
+   jc_1      2..12 (n=4800)
+   dq03_1    2..12 (n=963)
+   lq03_1    2..12 (n=2383)
+   sex       1..2 (n=8146)
+   ybirth    1962..1996 (n=8146)
+weight-like variable names in the delivered file: (none found) 
+design notes:
+   age = survey year - birth year (age reached in the survey year; birth month not used); analysis ages 25-45
+   treatment = last school attended is university/graduate school (educ 5-6; completion, enrolment and dropout are not distinguished by the item) vs all else
+   outcome = log(representative value printed in the income option label, 13 bands; band 2 -> 12.5; top band (2,250+) assigned 2500 man yen); interval midpoints as a sensitivity
+   nominal yen; survey-year (cohort) dummies absorb any year-specific deflator exactly because the outcome is in logs
+   SE = HC1 (heteroskedasticity-robust, no clustering): PSU / strata identifiers are not in the delivered file; the analysis is unweighted
+
+sample flow (by cohort):
+    cohort                    stage     n univ_share female_share age_min
+    <fctr>                   <char> <int>      <num>        <num>   <num>
+ 1:   2007 0_first_wave_respondents  4800      0.301        0.506      23
+ 2:   2011 0_first_wave_respondents   963      0.309        0.502      23
+ 3:   2019 0_first_wave_respondents  2383      0.303        0.509      23
+ 4:    all 0_first_wave_respondents  8146      0.302        0.506      23
+ 5:   2007               1_age25_45  4376      0.301        0.505      25
+ 6:   2011               1_age25_45   855      0.309        0.503      25
+ 7:   2019               1_age25_45  2196      0.304        0.504      25
+ 8:    all               1_age25_45  7427      0.303        0.504      25
+ 9:   2007               2_employee  3906      0.316        0.507      25
+10:   2011               2_employee   741      0.323        0.507      25
+11:   2019               2_employee  1978      0.311        0.511      25
+12:    all               2_employee  6625      0.315        0.508      25
+13:   2007             3_pos_income  3906      0.316        0.507      25
+14:   2011             3_pos_income   741      0.323        0.507      25
+15:   2019             3_pos_income  1978      0.311        0.511      25
+16:    all             3_pos_income  6625      0.315        0.508      25
+17:   2007 4_complete_licensed_vars  3906      0.316        0.507      25
+18:   2011 4_complete_licensed_vars   741      0.323        0.507      25
+19:   2019 4_complete_licensed_vars  1978      0.311        0.511      25
+20:    all 4_complete_licensed_vars  6625      0.315        0.508      25
+21:   2007      5_complete_all_vars  3906      0.316        0.507      25
+22:   2011      5_complete_all_vars   741      0.323        0.507      25
+23:   2019      5_complete_all_vars  1978      0.311        0.511      25
+24:    all      5_complete_all_vars  6625      0.315        0.508      25
+    cohort                    stage     n univ_share female_share age_min
+    <fctr>                   <char> <int>      <num>        <num>   <num>
+    age_max mean_age
+      <num>    <num>
+ 1:      45     34.0
+ 2:      45     33.8
+ 3:      45     34.1
+ 4:      45     34.0
+ 5:      45     35.0
+ 6:      45     35.1
+ 7:      45     35.0
+ 8:      45     35.0
+ 9:      45     35.0
+10:      45     35.1
+11:      45     34.9
+12:      45     35.0
+13:      45     35.0
+14:      45     35.1
+15:      45     34.9
+16:      45     35.0
+17:      45     35.0
+18:      45     35.1
+19:      45     34.9
+20:      45     35.0
+21:      45     35.0
+22:      45     35.1
+23:      45     34.9
+24:      45     35.0
+    age_max mean_age
+      <num>    <num>
+
+employees 25-45 with income: 6625 
+  missing shares (all):    univ  grades   peduc married     occ    firm regular 
+      0       0       0       0       0       0       0 
+  missing shares by cohort:
+   cohort  univ grades peduc married   occ  firm regular
+   <fctr> <num>  <num> <num>   <num> <num> <num>   <num>
+1:   2007     0      0     0       0     0     0       0
+2:   2011     0      0     0       0     0     0       0
+3:   2019     0      0     0       0     0     0       0
+analysis rows: 6625  univ share: 0.315 
+   cohort     n univ_share female_share mean_age mean_linc_univ
+   <fctr> <int>      <num>        <num>    <num>          <num>
+1:   2007  3906      0.316        0.507     35.0          6.025
+2:   2011   741      0.323        0.507     35.1          6.076
+3:   2019  1978      0.311        0.511     34.9          6.038
+4:    all  6625      0.315        0.508     35.0          6.035
+   mean_linc_nonuniv married_share regular_share
+               <num>         <num>         <num>
+1:             5.490         0.419         0.682
+2:             5.450         0.409         0.699
+3:             5.475         0.429         0.669
+4:             5.481         0.421         0.680
+                                W1 成績=交絡(R=G*)・婚姻=コライダー
+(none)                                                        FALSE
+occ                                                           FALSE
+firm                                                          FALSE
+occ;firm                                                      FALSE
+regular                                                       FALSE
+occ;regular                                                   FALSE
+firm;regular                                                  FALSE
+occ;firm;regular                                              FALSE
+married                                                       FALSE
+occ;married                                                   FALSE
+firm;married                                                  FALSE
+occ;firm;married                                              FALSE
+regular;married                                               FALSE
+occ;regular;married                                           FALSE
+firm;regular;married                                          FALSE
+occ;firm;regular;married                                      FALSE
+grades                                                         TRUE
+occ;grades                                                    FALSE
+firm;grades                                                   FALSE
+occ;firm;grades                                               FALSE
+regular;grades                                                FALSE
+occ;regular;grades                                            FALSE
+firm;regular;grades                                           FALSE
+occ;firm;regular;grades                                       FALSE
+married;grades                                                FALSE
+occ;married;grades                                            FALSE
+firm;married;grades                                           FALSE
+occ;firm;married;grades                                       FALSE
+regular;married;grades                                        FALSE
+occ;regular;married;grades                                    FALSE
+firm;regular;married;grades                                   FALSE
+occ;firm;regular;married;grades                               FALSE
+                                W2 成績=交絡(R=G*)・婚姻=精度変数
+(none)                                                      FALSE
+occ                                                         FALSE
+firm                                                        FALSE
+occ;firm                                                    FALSE
+regular                                                     FALSE
+occ;regular                                                 FALSE
+firm;regular                                                FALSE
+occ;firm;regular                                            FALSE
+married                                                     FALSE
+occ;married                                                 FALSE
+firm;married                                                FALSE
+occ;firm;married                                            FALSE
+regular;married                                             FALSE
+occ;regular;married                                         FALSE
+firm;regular;married                                        FALSE
+occ;firm;regular;married                                    FALSE
+grades                                                       TRUE
+occ;grades                                                  FALSE
+firm;grades                                                 FALSE
+occ;firm;grades                                             FALSE
+regular;grades                                              FALSE
+occ;regular;grades                                          FALSE
+firm;regular;grades                                         FALSE
+occ;firm;regular;grades                                     FALSE
+married;grades                                               TRUE
+occ;married;grades                                          FALSE
+firm;married;grades                                         FALSE
+occ;firm;married;grades                                     FALSE
+regular;married;grades                                      FALSE
+occ;regular;married;grades                                  FALSE
+firm;regular;married;grades                                 FALSE
+occ;firm;regular;married;grades                             FALSE
+                                W3 成績=回顧の子孫・婚姻=コライダー
+(none)                                                         TRUE
+occ                                                           FALSE
+firm                                                          FALSE
+occ;firm                                                      FALSE
+regular                                                       FALSE
+occ;regular                                                   FALSE
+firm;regular                                                  FALSE
+occ;firm;regular                                              FALSE
+married                                                       FALSE
+occ;married                                                   FALSE
+firm;married                                                  FALSE
+occ;firm;married                                              FALSE
+regular;married                                               FALSE
+occ;regular;married                                           FALSE
+firm;regular;married                                          FALSE
+occ;firm;regular;married                                      FALSE
+grades                                                        FALSE
+occ;grades                                                    FALSE
+firm;grades                                                   FALSE
+occ;firm;grades                                               FALSE
+regular;grades                                                FALSE
+occ;regular;grades                                            FALSE
+firm;regular;grades                                           FALSE
+occ;firm;regular;grades                                       FALSE
+married;grades                                                FALSE
+occ;married;grades                                            FALSE
+firm;married;grades                                           FALSE
+occ;firm;married;grades                                       FALSE
+regular;married;grades                                        FALSE
+occ;regular;married;grades                                    FALSE
+firm;regular;married;grades                                   FALSE
+occ;firm;regular;married;grades                               FALSE
+                                W4 成績=回顧の子孫・婚姻=精度変数
+(none)                                                       TRUE
+occ                                                         FALSE
+firm                                                        FALSE
+occ;firm                                                    FALSE
+regular                                                     FALSE
+occ;regular                                                 FALSE
+firm;regular                                                FALSE
+occ;firm;regular                                            FALSE
+married                                                      TRUE
+occ;married                                                 FALSE
+firm;married                                                FALSE
+occ;firm;married                                            FALSE
+regular;married                                             FALSE
+occ;regular;married                                         FALSE
+firm;regular;married                                        FALSE
+occ;firm;regular;married                                    FALSE
+grades                                                      FALSE
+occ;grades                                                  FALSE
+firm;grades                                                 FALSE
+occ;firm;grades                                             FALSE
+regular;grades                                              FALSE
+occ;regular;grades                                          FALSE
+firm;regular;grades                                         FALSE
+occ;firm;regular;grades                                     FALSE
+married;grades                                              FALSE
+occ;married;grades                                          FALSE
+firm;married;grades                                         FALSE
+occ;firm;married;grades                                     FALSE
+regular;married;grades                                      FALSE
+occ;regular;married;grades                                  FALSE
+firm;regular;married;grades                                 FALSE
+occ;firm;regular;married;grades                             FALSE
+                                W5 成績=混合(G*潜在)・婚姻=コライダー
+(none)                                                          FALSE
+occ                                                             FALSE
+firm                                                            FALSE
+occ;firm                                                        FALSE
+regular                                                         FALSE
+occ;regular                                                     FALSE
+firm;regular                                                    FALSE
+occ;firm;regular                                                FALSE
+married                                                         FALSE
+occ;married                                                     FALSE
+firm;married                                                    FALSE
+occ;firm;married                                                FALSE
+regular;married                                                 FALSE
+occ;regular;married                                             FALSE
+firm;regular;married                                            FALSE
+occ;firm;regular;married                                        FALSE
+grades                                                          FALSE
+occ;grades                                                      FALSE
+firm;grades                                                     FALSE
+occ;firm;grades                                                 FALSE
+regular;grades                                                  FALSE
+occ;regular;grades                                              FALSE
+firm;regular;grades                                             FALSE
+occ;firm;regular;grades                                         FALSE
+married;grades                                                  FALSE
+occ;married;grades                                              FALSE
+firm;married;grades                                             FALSE
+occ;firm;married;grades                                         FALSE
+regular;married;grades                                          FALSE
+occ;regular;married;grades                                      FALSE
+firm;regular;married;grades                                     FALSE
+occ;firm;regular;married;grades                                 FALSE
+
+admissible specifications per world:  W1 成績=交絡(R=G*)・婚姻=コライダー     W2 成績=交絡(R=G*)・婚姻=精度変数 
+                                    1                                     2 
+  W3 成績=回顧の子孫・婚姻=コライダー     W4 成績=回顧の子孫・婚姻=精度変数 
+                                    1                                     2 
+W5 成績=混合(G*潜在)・婚姻=コライダー 
+                                    0 
+  >> W5 成績=混合(G*潜在)・婚姻=コライダー: NOT IDENTIFIED BY ADJUSTMENT (no subset of the candidate pool is admissible)
+
+diagnostic worlds:
+                                    world n_valid
+                                   <char>   <int>
+1:           W5' 成績=混合・婚姻=精度変数       0
+2:      D1 成績=交絡, R=G*+誤差(汚染なし)       0
+3: D2 成績=無関係(G*→educ のみ, 汚染なし)       4
+                                   valid_sets
+                                       <char>
+1:                                           
+2:                                           
+3: (none) | married | grades | married;grades
+== dagmv: within/between-DAG decomposition ==
+
+Naive multiverse (all specifications pooled):
+  n_specs  mean sd_model sign_stab sig_rate robust_ratio
+1      32 0.484    0.038         1        1       11.745
+
+Per candidate DAG (admissible specifications only):
+                                   dag n_specs  mean sd_model mean_se sign_stab
+   W1 成績=交絡(R=G*)・婚姻=コライダー       1 0.541    0.000   0.015         1
+     W2 成績=交絡(R=G*)・婚姻=精度変数       2 0.533    0.010   0.015         1
+   W3 成績=回顧の子孫・婚姻=コライダー       1 0.546    0.000   0.015         1
+     W4 成績=回顧の子孫・婚姻=精度変数       2 0.539    0.011   0.015         1
+ W5 成績=混合(G*潜在)・婚姻=コライダー       0    NA       NA      NA        NA
+ sig_rate robust_ratio
+        1       35.358
+        1       28.734
+        1       35.710
+        1       28.903
+       NA           NA
+
+Not identified by adjustment (no admissible subset of the candidate pool): W5 成績=混合(G*潜在)・婚姻=コライダー
+  These worlds are kept above with n_specs = 0 and excluded from the decomposition; world weights are renormalised over the 4 identified worlds.
+
+Decomposition of multiverse variance (DAG-weighted):
+  world weights: equal (1/5 each; pass `weights` to override)
+  weights used (identified worlds): W1 成績=交絡(R=G*)・婚姻=コライダー = 0.250, W2 成績=交絡(R=G*)・婚姻=精度変数 = 0.250, W3 成績=回顧の子孫・婚姻=コライダー = 0.250, W4 成績=回顧の子孫・婚姻=精度変数 = 0.250 
+  total   = 0.00005
+  within  = 0.00003  (specification dispersion within worlds)
+  between = 0.00002  (dispersion between worlds)
+  >> share of variance due to structural uncertainty: 43.8%
+  note: W1 成績=交絡(R=G*)・婚姻=コライダー, W3 成績=回顧の子孫・婚姻=コライダー have a single admissible specification; within-world variance is mechanically 0 there.
+           ctrl licensed_by implicit_weight
+         (none)       W3,W4           0.375
+        married          W4           0.125
+         grades       W1,W2           0.375
+ married;grades          W2           0.125
+                        [,1]
+n_specs         32.000000000
+n_licensed       4.000000000
+naive_mean       0.484460754
+naive_sd         0.038092366
+naive_min        0.422367719
+naive_max        0.547715609
+naive_sig_rate   1.000000000
+licensed_mean    0.536135356
+licensed_sd      0.009202036
+licensed_min     0.525942138
+licensed_max     0.546426527
+unlicensed_mean  0.477078668
+unlicensed_sd    0.034705599
+share_between    0.438121211
+
+common support / maximal sample:
+                             analysis cohort     n univ_share           ctrl
+                               <char> <char> <int>      <num>         <char>
+ 1:              common_support_25_32   2007  1490      0.326         (none)
+ 2:              common_support_25_32   2007  1490      0.326        married
+ 3:              common_support_25_32   2007  1490      0.326         grades
+ 4:              common_support_25_32   2007  1490      0.326 married;grades
+ 5:              common_support_25_32   2011   281      0.295         (none)
+ 6:              common_support_25_32   2011   281      0.295        married
+ 7:              common_support_25_32   2011   281      0.295         grades
+ 8:              common_support_25_32   2011   281      0.295 married;grades
+ 9:              common_support_25_32   2019   766      0.309         (none)
+10:              common_support_25_32   2019   766      0.309        married
+11:              common_support_25_32   2019   766      0.309         grades
+12:              common_support_25_32   2019   766      0.309 married;grades
+13:              common_support_25_32    all  2537      0.317         (none)
+14:              common_support_25_32    all  2537      0.317        married
+15:              common_support_25_32    all  2537      0.317         grades
+16:              common_support_25_32    all  2537      0.317 married;grades
+17:              common_support_25_31   2007  1312      0.332         (none)
+18:              common_support_25_31   2007  1312      0.332        married
+19:              common_support_25_31   2007  1312      0.332         grades
+20:              common_support_25_31   2007  1312      0.332 married;grades
+21:              common_support_25_31   2011   248      0.290         (none)
+22:              common_support_25_31   2011   248      0.290        married
+23:              common_support_25_31   2011   248      0.290         grades
+24:              common_support_25_31   2011   248      0.290 married;grades
+25:              common_support_25_31   2019   682      0.308         (none)
+26:              common_support_25_31   2019   682      0.308        married
+27:              common_support_25_31   2019   682      0.308         grades
+28:              common_support_25_31   2019   682      0.308 married;grades
+29:              common_support_25_31    all  2242      0.320         (none)
+30:              common_support_25_31    all  2242      0.320        married
+31:              common_support_25_31    all  2242      0.320         grades
+32:              common_support_25_31    all  2242      0.320 married;grades
+33: max_sample_licensed_vars_complete    all  6625      0.315         (none)
+34: max_sample_licensed_vars_complete    all  6625      0.315        married
+35: max_sample_licensed_vars_complete    all  6625      0.315         grades
+36: max_sample_licensed_vars_complete    all  6625      0.315 married;grades
+37:                       main_sample    all  6625      0.315         (none)
+38:                       main_sample    all  6625      0.315        married
+39:                       main_sample    all  6625      0.315         grades
+40:                       main_sample    all  6625      0.315 married;grades
+41: main_sample_excl_working_students    all  6202      0.324         (none)
+42: main_sample_excl_working_students    all  6202      0.324        married
+43: main_sample_excl_working_students    all  6202      0.324         grades
+44: main_sample_excl_working_students    all  6202      0.324 married;grades
+45:      main_sample_income_midpoints    all  6625      0.315         (none)
+46:      main_sample_income_midpoints    all  6625      0.315        married
+47:      main_sample_income_midpoints    all  6625      0.315         grades
+48:      main_sample_income_midpoints    all  6625      0.315 married;grades
+49:    main_sample_grades_categorical    all  6625      0.315         (none)
+50:    main_sample_grades_categorical    all  6625      0.315        married
+51:    main_sample_grades_categorical    all  6625      0.315         grades
+52:    main_sample_grades_categorical    all  6625      0.315 married;grades
+53:               age_range_by_cohort   2007  3906         NA     ages 25-45
+54:               age_range_by_cohort   2011   741         NA     ages 25-45
+55:               age_range_by_cohort   2019  1978         NA     ages 25-45
+                             analysis cohort     n univ_share           ctrl
+                               <char> <char> <int>      <num>         <char>
+     estimate         se
+        <num>      <num>
+ 1: 0.5445487 0.03276394
+ 2: 0.5231629 0.03321862
+ 3: 0.5367124 0.03271886
+ 4: 0.5156620 0.03321180
+ 5: 0.6936301 0.07344738
+ 6: 0.6932526 0.07462031
+ 7: 0.6938257 0.07358815
+ 8: 0.6934835 0.07477463
+ 9: 0.5163514 0.04678911
+10: 0.5001466 0.04682717
+11: 0.5062996 0.04747122
+12: 0.4920728 0.04748716
+13: 0.5492742 0.02509722
+14: 0.5326174 0.02538221
+15: 0.5424990 0.02512502
+16: 0.5265929 0.02542604
+17: 0.5421625 0.03491096
+18: 0.5227902 0.03559060
+19: 0.5342803 0.03491693
+20: 0.5153487 0.03563078
+21: 0.7126020 0.07844690
+22: 0.7168188 0.08040909
+23: 0.7126063 0.07873357
+24: 0.7168880 0.08074266
+25: 0.5508796 0.04876328
+26: 0.5356721 0.04890722
+27: 0.5464926 0.04980662
+28: 0.5323888 0.04991852
+29: 0.5580697 0.02660774
+30: 0.5431047 0.02703169
+31: 0.5523299 0.02669133
+32: 0.5380188 0.02712304
+33: 0.5464265 0.01530167
+34: 0.5313844 0.01532638
+35: 0.5407884 0.01529461
+36: 0.5259421 0.01532227
+37: 0.5464265 0.01530167
+38: 0.5313844 0.01532638
+39: 0.5407884 0.01529461
+40: 0.5259421 0.01532227
+41: 0.5435557 0.01566162
+42: 0.5283871 0.01569741
+43: 0.5379011 0.01565866
+44: 0.5228912 0.01569730
+45: 0.5412373 0.01520606
+46: 0.5264062 0.01523046
+47: 0.5356912 0.01520062
+48: 0.5210531 0.01522763
+49: 0.5464265 0.01530167
+50: 0.5313844 0.01532638
+51: 0.5403788 0.01530226
+52: 0.5254688 0.01532987
+53:        NA         NA
+54:        NA         NA
+55:        NA         NA
+     estimate         se
+        <num>      <num>
+
+top-band sensitivity (n in top band: <10 ):
+                         variant top_value_man n_top_band           ctrl
+                          <char>         <num>      <int>         <char>
+ 1:                     baseline          2500         NA         (none)
+ 2:                     baseline          2500         NA        married
+ 3:                     baseline          2500         NA         grades
+ 4:                     baseline          2500         NA married;grades
+ 5:                    memo_2250          2250         NA         (none)
+ 6:                    memo_2250          2250         NA        married
+ 7:                    memo_2250          2250         NA         grades
+ 8:                    memo_2250          2250         NA married;grades
+ 9: x0.75_below_band_lower_bound          1875         NA         (none)
+10: x0.75_below_band_lower_bound          1875         NA        married
+11: x0.75_below_band_lower_bound          1875         NA         grades
+12: x0.75_below_band_lower_bound          1875         NA married;grades
+13:                         x1.5          3750         NA         (none)
+14:                         x1.5          3750         NA        married
+15:                         x1.5          3750         NA         grades
+16:                         x1.5          3750         NA married;grades
+     estimate         se gap_none_minus_grades
+        <num>      <num>                 <num>
+ 1: 0.5464265 0.01530167           0.005638140
+ 2: 0.5313844 0.01532638           0.005638140
+ 3: 0.5407884 0.01529461           0.005638140
+ 4: 0.5259421 0.01532227           0.005638140
+ 5: 0.5462301 0.01529301           0.005629415
+ 6: 0.5311950 0.01531840           0.005629415
+ 7: 0.5406007 0.01528688           0.005629415
+ 8: 0.5257613 0.01531513           0.005629415
+ 9: 0.5458902 0.01527955           0.005614317
+10: 0.5308673 0.01530601           0.005614317
+11: 0.5402759 0.01527491           0.005614317
+12: 0.5254483 0.01530410           0.005614317
+13: 0.5471825 0.01534097           0.005671717
+14: 0.5321132 0.01536270           0.005671717
+15: 0.5415107 0.01532979           0.005671717
+16: 0.5266382 0.01535485           0.005671717
+
+bootstrap engine check: max |lm.fit - fit_spec| = 0.00e+00
+bootstrap (pooled, B=500) done in 85 s
+bootstrap replicates with all 32 estimates finite: 500 of 500
+grades categorical (4 df): (none) 0.5464, grades 0.5404, contrast 0.0060 (linear-score contrast 0.0056)
+
+bootstrap summary:
+                             sample                                quantity
+                             <char>                                  <char>
+ 1:                    pooled_25_45                     delta_W34_minus_W12
+ 2:                    pooled_25_45                 delta_none_minus_grades
+ 3:                    pooled_25_45                  delta_married_noGrades
+ 4:                    pooled_25_45                    delta_married_grades
+ 5:                    pooled_25_45                                  mu_W12
+ 6:                    pooled_25_45                                  mu_W34
+ 7:                    pooled_25_45                              naive_mean
+ 8:                    pooled_25_45                           licensed_mean
+ 9:                    pooled_25_45                         unlicensed_mean
+10:                    pooled_25_45                       rho_between_share
+11:                    pooled_25_45                                   mu_W1
+12:                    pooled_25_45                                   mu_W2
+13:                    pooled_25_45                                   mu_W3
+14:                    pooled_25_45                                   mu_W4
+15:               cohort_2007_25_45                 delta_none_minus_grades
+16:               cohort_2007_25_45                  delta_married_noGrades
+17:               cohort_2007_25_45                    delta_married_grades
+18:               cohort_2007_25_45                                 mu_none
+19:               cohort_2007_25_45                               mu_grades
+20:               cohort_2007_25_32                 delta_none_minus_grades
+21:               cohort_2007_25_32                  delta_married_noGrades
+22:               cohort_2007_25_32                    delta_married_grades
+23:               cohort_2007_25_32                                 mu_none
+24:               cohort_2007_25_32                               mu_grades
+25:               cohort_2007_25_31                 delta_none_minus_grades
+26:               cohort_2007_25_31                  delta_married_noGrades
+27:               cohort_2007_25_31                    delta_married_grades
+28:               cohort_2007_25_31                                 mu_none
+29:               cohort_2007_25_31                               mu_grades
+30:               cohort_2011_25_45                 delta_none_minus_grades
+31:               cohort_2011_25_45                  delta_married_noGrades
+32:               cohort_2011_25_45                    delta_married_grades
+33:               cohort_2011_25_45                                 mu_none
+34:               cohort_2011_25_45                               mu_grades
+35:               cohort_2011_25_32                 delta_none_minus_grades
+36:               cohort_2011_25_32                  delta_married_noGrades
+37:               cohort_2011_25_32                    delta_married_grades
+38:               cohort_2011_25_32                                 mu_none
+39:               cohort_2011_25_32                               mu_grades
+40:               cohort_2011_25_31                 delta_none_minus_grades
+41:               cohort_2011_25_31                  delta_married_noGrades
+42:               cohort_2011_25_31                    delta_married_grades
+43:               cohort_2011_25_31                                 mu_none
+44:               cohort_2011_25_31                               mu_grades
+45:               cohort_2019_25_45                 delta_none_minus_grades
+46:               cohort_2019_25_45                  delta_married_noGrades
+47:               cohort_2019_25_45                    delta_married_grades
+48:               cohort_2019_25_45                                 mu_none
+49:               cohort_2019_25_45                               mu_grades
+50:               cohort_2019_25_32                 delta_none_minus_grades
+51:               cohort_2019_25_32                  delta_married_noGrades
+52:               cohort_2019_25_32                    delta_married_grades
+53:               cohort_2019_25_32                                 mu_none
+54:               cohort_2019_25_32                               mu_grades
+55:               cohort_2019_25_31                 delta_none_minus_grades
+56:               cohort_2019_25_31                  delta_married_noGrades
+57:               cohort_2019_25_31                    delta_married_grades
+58:               cohort_2019_25_31                                 mu_none
+59:               cohort_2019_25_31                               mu_grades
+60:                    pooled_25_32                 delta_none_minus_grades
+61:                    pooled_25_31                 delta_none_minus_grades
+62: pooled_25_45_grades_categorical                 delta_none_minus_grades
+63: pooled_25_45_grades_categorical                                 mu_none
+64: pooled_25_45_grades_categorical                               mu_grades
+65: pooled_25_45_grades_categorical                       mu_married_grades
+66:                    pooled_25_45 delta_contrast_linear_minus_categorical
+                             sample                                quantity
+                             <char>                                  <char>
+      point     se    q025    q975 p_le0
+      <num>  <num>   <num>   <num> <num>
+ 1:  0.0056 0.0015  0.0029  0.0087 0.000
+ 2:  0.0056 0.0015  0.0029  0.0087 0.000
+ 3: -0.0150 0.0024 -0.0201 -0.0108 1.000
+ 4: -0.0148 0.0024 -0.0197 -0.0105 1.000
+ 5:  0.5371 0.0164  0.5092  0.5716 0.000
+ 6:  0.5427 0.0165  0.5140  0.5778 0.000
+ 7:  0.4845 0.0164  0.4564  0.5198 0.000
+ 8:  0.5399 0.0164  0.5118  0.5751 0.000
+ 9:  0.4771 0.0165  0.4486  0.5123 0.000
+10:  0.4381 0.0553  0.3613  0.5817 0.000
+11:  0.5408 0.0164  0.5129  0.5751 0.000
+12:  0.5334 0.0164  0.5057  0.5675 0.000
+13:  0.5464 0.0165  0.5172  0.5808 0.000
+14:  0.5389 0.0165  0.5106  0.5740 0.000
+15:  0.0071 0.0021  0.0032  0.0114 0.000
+16: -0.0166 0.0034 -0.0237 -0.0108 1.000
+17: -0.0165 0.0034 -0.0238 -0.0109 1.000
+18:  0.5444 0.0195  0.5063  0.5843 0.000
+19:  0.5373 0.0195  0.4992  0.5761 0.000
+20:  0.0078 0.0039  0.0018  0.0158 0.002
+21: -0.0214 0.0061 -0.0340 -0.0107 1.000
+22: -0.0211 0.0061 -0.0338 -0.0105 1.000
+23:  0.5445 0.0322  0.4810  0.6105 0.000
+24:  0.5367 0.0322  0.4739  0.6028 0.000
+25:  0.0079 0.0041  0.0013  0.0167 0.006
+26: -0.0194 0.0063 -0.0325 -0.0081 1.000
+27: -0.0189 0.0063 -0.0322 -0.0080 1.000
+28:  0.5422 0.0366  0.4717  0.6098 0.000
+29:  0.5343 0.0366  0.4663  0.6047 0.000
+30:  0.0068 0.0054 -0.0022  0.0187 0.060
+31: -0.0066 0.0054 -0.0190  0.0017 0.928
+32: -0.0063 0.0054 -0.0189  0.0022 0.916
+33:  0.6092 0.0452  0.5221  0.7015 0.000
+34:  0.6024 0.0449  0.5156  0.6935 0.000
+35: -0.0002 0.0045 -0.0105  0.0087 0.564
+36: -0.0004 0.0084 -0.0169  0.0185 0.494
+37: -0.0003 0.0084 -0.0172  0.0188 0.498
+38:  0.6936 0.0721  0.5362  0.8350 0.000
+39:  0.6938 0.0720  0.5357  0.8341 0.000
+40:  0.0000 0.0056 -0.0120  0.0128 0.496
+41:  0.0042 0.0112 -0.0147  0.0304 0.330
+42:  0.0043 0.0112 -0.0148  0.0306 0.324
+43:  0.7126 0.0830  0.5480  0.8803 0.000
+44:  0.7126 0.0833  0.5498  0.8826 0.000
+45:  0.0027 0.0022 -0.0009  0.0072 0.080
+46: -0.0143 0.0044 -0.0248 -0.0071 1.000
+47: -0.0140 0.0044 -0.0244 -0.0069 1.000
+48:  0.5283 0.0281  0.4735  0.5804 0.000
+49:  0.5256 0.0282  0.4701  0.5776 0.000
+50:  0.0101 0.0063  0.0009  0.0255 0.012
+51: -0.0162 0.0074 -0.0305 -0.0039 1.000
+52: -0.0142 0.0069 -0.0276 -0.0023 0.994
+53:  0.5164 0.0464  0.4305  0.6111 0.000
+54:  0.5063 0.0468  0.4186  0.5980 0.000
+55:  0.0044 0.0072 -0.0104  0.0206 0.298
+56: -0.0152 0.0079 -0.0336 -0.0030 0.996
+57: -0.0141 0.0077 -0.0304 -0.0027 0.994
+58:  0.5509 0.0470  0.4629  0.6456 0.000
+59:  0.5465 0.0484  0.4637  0.6436 0.000
+60:  0.0068 0.0026  0.0023  0.0123 0.000
+61:  0.0057 0.0027  0.0004  0.0116 0.018
+62:  0.0060 0.0016  0.0028  0.0092 0.000
+63:  0.5464 0.0165  0.5172  0.5808 0.000
+64:  0.5404 0.0164  0.5123  0.5754 0.000
+65:  0.5255 0.0165  0.4980  0.5603 0.000
+66: -0.0004 0.0005 -0.0017  0.0006 0.776
+      point     se    q025    q975 p_le0
+      <num>  <num>   <num>   <num> <num>
+unlicensed specifications: 28
+  95% CI (est +/- 1.96 HC1 SE) excludes the W1/W2 value 0.541: 24
+  95% CI excludes the W3/W4 value 0.546: 24
+  95% CI excludes the naive mean 0.484: 12
+share of the 2007 cohort in the analysis sample: 0.590
+
+measurement calibration (r2 = residualized Corr^2(E,R)):
+   lambda      r2_obs   q_implied tau_two_parameter tau_lambda_only_approx
+    <num>       <num>       <num>             <num>                  <num>
+1:   1.00 0.005030704 0.005030704         0.5407884              0.5407884
+2:   0.95 0.005030704 0.005295478         0.5404901              0.5404916
+3:   0.90 0.005030704 0.005589672         0.5401584              0.5401619
+4:   0.85 0.005030704 0.005918476         0.5397875              0.5397934
+5:   0.80 0.005030704 0.006288381         0.5393699              0.5393789
+6:   0.75 0.005030704 0.006707606         0.5388963              0.5389090
+7:   0.70 0.005030704 0.007186721         0.5383545              0.5383720
+8:   0.65 0.005030704 0.007739545         0.5377288              0.5377525
+done -> output 
+== analysis/Rscript j1_templates.R 23:32:27
+
+#### 雛形1 学歴と所得(W1–W5) 
+
+[ W1 成績=交絡(R=G*)・婚姻=コライダー ]
+  control      role
+1   peduc  required
+2     age  required
+3  female  required
+4  cohort  required
+5  grades  required
+6 married forbidden
+7     occ forbidden
+8    firm forbidden
+9 regular forbidden
+
+[ W2 成績=交絡(R=G*)・婚姻=精度変数 ]
+  control      role
+1   peduc  required
+2     age  required
+3  female  required
+4  cohort  required
+5  grades  required
+6 married  optional
+7     occ forbidden
+8    firm forbidden
+9 regular forbidden
+
+[ W3 成績=回顧の子孫・婚姻=コライダー ]
+  control      role
+1   peduc  required
+2     age  required
+3  female  required
+4  cohort  required
+5  grades forbidden
+6 married forbidden
+7     occ forbidden
+8    firm forbidden
+9 regular forbidden
+
+[ W4 成績=回顧の子孫・婚姻=精度変数 ]
+  control      role
+1   peduc  required
+2     age  required
+3  female  required
+4  cohort  required
+5  grades forbidden
+6 married  optional
+7     occ forbidden
+8    firm forbidden
+9 regular forbidden
+
+[ W5 成績=混合(G*潜在)・婚姻=コライダー ]
+  control           role
+1   peduc not identified
+2     age not identified
+3  female not identified
+4  cohort not identified
+5  grades not identified
+6 married not identified
+7     occ not identified
+8    firm not identified
+9 regular not identified
+
+#### 雛形2 婚姻と就業 
+
+[ 子=媒介 / 親同居=媒介 ]
+   control      role
+1     educ  required
+2 firstreg  required
+3    urban  required
+4    child forbidden
+5    cores forbidden
+
+[ 子=交絡 / 親同居=媒介 ]
+   control      role
+1     educ  required
+2 firstreg  required
+3    urban  required
+4    child  required
+5    cores forbidden
+
+[ 子=媒介 / 親同居=交絡 ]
+   control      role
+1     educ  required
+2 firstreg  required
+3    urban  required
+4    child forbidden
+5    cores  required
+
+[ 子=交絡 / 親同居=交絡 ]
+   control     role
+1     educ required
+2 firstreg required
+3    urban required
+4    child required
+5    cores required
+
+#### 雛形2 付録(識別不能世界) 
+
+[ 付録: 夫所得=未測定Uの代理 ]
+   control           role
+1     educ not identified
+2 firstreg not identified
+3    urban not identified
+4    child not identified
+5     hinc not identified
+
+#### 雛形3 居住地と健康 
+
+[ 所得=媒介 / つながり=媒介 ]
+  control      role
+1    educ  required
+2     age  required
+3    born  required
+4     inc forbidden
+5    ties forbidden
+
+[ 所得=交絡 / つながり=媒介 ]
+  control      role
+1    educ  required
+2     age  required
+3    born  required
+4     inc  required
+5    ties forbidden
+
+[ 所得=媒介 / つながり=交絡 ]
+  control      role
+1    educ  required
+2     age  required
+3    born  required
+4     inc forbidden
+5    ties  required
+
+[ 所得=交絡 / つながり=交絡 ]
+  control     role
+1    educ required
+2     age required
+3    born required
+4     inc required
+5    ties required

@@ -1,6 +1,6 @@
 # j1_freeze_record.R — 正規利用者による固定版再実行の記録(知人査読第 3 回 R3-DC1)。
 # 入力ファイルの識別(名前・サイズ・SHA-256; 個票の中身は出さない)、実行コードのチェックサム、環境、
-# results/ の各出力の SHA-256、および本文 v0.8 に転記した数値と出力の照合を 1 組にして書き出す。
+# results/ の各出力の SHA-256、および本文 v0.9 に転記した数値と出力の照合を 1 組にして書き出す。
 # Usage: Rscript j1_freeze_record.R <official .dta/.sav> <jlps_all_wide.rds> <results_dir> [<jp_combine_wide.R>]
 #   例: Rscript j1_freeze_record.R ~/Documents/JLPS_data/raw/ZQ115...RQ102.dta ~/Documents/JLPS_data/work_jp/jlps_all_wide.rds ../results ../../jp_combine_wide.R
 # 出力: <results_dir>/j1_freeze_record.txt, j1_freeze_record.csv(個票を含まない)。
@@ -47,8 +47,8 @@ for (k in names(env)) { say("  %-10s %s", k, env[[k]]); rec[[length(rec) + 1]] <
 say(""); say("== 4. outputs in %s (sha256) ==", resdir)
 for (f in sort(list.files(resdir, full.names = TRUE))) { if (grepl("j1_freeze_record", f)) next
   say("  %-36s %s", basename(f), sha(f)); rec[[length(rec) + 1]] <- data.table(section = "output", item = basename(f), value = NA_character_, sha256 = sha(f)) }
-## 5. manuscript (v0.8) numbers vs outputs
-say(""); say("== 5. manuscript v0.8 numbers vs outputs (rounded to the printed precision) ==")
+## 5. manuscript (v0.9) numbers vs outputs
+say(""); say("== 5. manuscript v0.9 numbers vs outputs (rounded to the printed precision) ==")
 rd <- function(p) fread(file.path(resdir, p))
 chk <- list(); add <- function(label, manuscript, value, digits) chk[[length(chk) + 1]] <<- data.table(label = label, manuscript = manuscript, output = round(value, digits), match = isTRUE(all.equal(round(value, digits), manuscript)))
 tryCatch({
@@ -85,11 +85,18 @@ tryCatch({
   add("note3 excl. working students grades", 0.175, su[analysis == "main_sample_excl_working_students" & ctrl == "grades"]$estimate, 3); add("note3 excl. working students none", 0.253, su[analysis == "main_sample_excl_working_students" & ctrl == "(none)"]$estimate, 3)
   add("note3 midpoints grades", 0.169, su[analysis == "main_sample_income_midpoints" & ctrl == "grades"]$estimate, 3); add("note3 midpoints none", 0.246, su[analysis == "main_sample_income_midpoints" & ctrl == "(none)"]$estimate, 3)
   add("note3 top-band gap 2250", 0.0768, is[variant == "memo_2250"]$gap_none_minus_grades[1], 4); add("note3 top-band gap 3750", 0.0766, is[variant == "x1.5"]$gap_none_minus_grades[1], 4)
-  ## v4 additions (R3-O1): filled in the manuscript after this record is produced
-  if (any(su$analysis == "main_sample_grades_categorical")) {
-    add("v4: grades categorical (grades) — manuscript value to be transcribed", NA_real_, su[analysis == "main_sample_grades_categorical" & ctrl == "grades"]$estimate, 3)
-    add("v4: grades categorical contrast — manuscript value to be transcribed", NA_real_, bo[sample == "pooled_25_45_grades_categorical" & quantity == "delta_none_minus_grades"]$point, 3)
-    add("v4: grades categorical contrast SE — to be transcribed", NA_real_, bo[sample == "pooled_25_45_grades_categorical" & quantity == "delta_none_minus_grades"]$se, 3) }
+  ## v4 / R3-O1: note 3, categorical coding of the retrospective grade (manuscript v0.9).
+  ## The manuscript states the difference as categorical - linear (+0.0005); j1_bootstrap.csv stores
+  ## linear - categorical, so the sign of the point estimate and of the interval bounds is flipped here.
+  if (any(su$analysis == "main_sample_grades_categorical") &&
+      nrow(bo[sample == "pooled_25_45" & quantity == "delta_contrast_linear_minus_categorical"]) == 1L) {
+    dc <- bo[sample == "pooled_25_45" & quantity == "delta_contrast_linear_minus_categorical"]
+    add("note3 categorical contrast", 0.0772, bo[sample == "pooled_25_45_grades_categorical" & quantity == "delta_none_minus_grades"]$point, 4)
+    add("note3 linear contrast (for comparison)", 0.0767, bo[sample == "pooled_25_45" & quantity == "delta_none_minus_grades"]$point, 4)
+    add("note3 categorical - linear", 0.0005, -dc$point, 4)
+    add("note3 paired SE", 0.002, dc$se, 3)
+    add("note3 paired interval, lower", -0.004, -dc$q975, 3)
+    add("note3 paired interval, upper", 0.005, -dc$q025, 3) }
 }, error = function(e) say("  !! comparison could not be completed: %s", conditionMessage(e)))
 chk <- rbindlist(chk)
 if (nrow(chk)) { for (i in seq_len(nrow(chk))) say("  %-58s manuscript=%-8s output=%-8s %s", chk$label[i], format(chk$manuscript[i]), format(chk$output[i]), if (is.na(chk$manuscript[i])) "(new in v4)" else if (chk$match[i]) "ok" else "!! MISMATCH")

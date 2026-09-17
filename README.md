@@ -13,8 +13,8 @@ Submitted to 『理論と方法』(Sociological Theory and Methods); not posted 
 release-check records (`RELEASE_CHECK*`), which are written after the manifest.
 
 ## Checked commit and release record
-Computational commit checked against the manuscript: not yet checked (a release check is run after the first publication; see `RELEASE_CHECK.md` once present)
-Tag matching the submitted manuscript version: `j1-v0.8` (the manuscript is anonymised, so the URL and tag are given in the submission's separate sheet, not in the manuscript body; §7.1 and §8(7) refer to the fixed-version tag). No third-party licensed user has re-run the JLPS analysis; real-data reproduction rests on the author's frozen rerun record (`analysis/RUN_LOG_J1.md`, `j1_freeze_record.txt`).
+Computational commit checked against the manuscript: `fa0eb1a24ac9e6380705a58979d13f2cd7a43df1` — see `RELEASE_CHECK.md` (with `RELEASE_CHECK_run.log` and `RELEASE_CHECK_sessionInfo.txt` when a clean-copy run was made). Later commits change documentation and the release record only — `git diff --stat fa0eb1a24ac9e6380705a58979d13f2cd7a43df1 HEAD` lists them — so the scripts, data and outputs are those of the checked commit; after any change to code or outputs the release check is rerun and this line is regenerated.
+Tag matching the submitted manuscript version: `j1-v0.9` (the manuscript is anonymised, so the URL and tag are given in the submission's separate sheet, not in the manuscript body; §7.1 and §8(7) refer to the fixed-version tag). No third-party licensed user has re-run the JLPS analysis; real-data reproduction rests on the author's frozen rerun record (`analysis/RUN_LOG_J1.md`, `j1_freeze_record.txt`).
 
 ## How to run
 1. Install R (>= 4.3) and the packages pinned in `analysis/README_J1.md` (the install command is given under "Quick start" below).
@@ -26,17 +26,23 @@ Tag matching the submitted manuscript version: `j1-v0.8` (the manuscript is anon
    run it as `bash stage_figures.sh figures` from this folder (or `bash ../stage_figures.sh <dest>`
    from `analysis/`): it copies the manuscript figures from the outputs to `figures/`; the PDF
    build itself (Quarto) is not part of the numerical reproduction.
-3. No data file of the empirical section is included: the JLPS individual records are restricted (SSJDA terms of use) and their aggregate outputs are withheld pending the disclosure check; the archive ships the code, the conversion script, a synthetic input and its expected outputs. See `analysis/README_J1.md`.
+3. No data file of the empirical section is included: the JLPS individual records are restricted and their aggregate outputs are withheld pending the disclosure check; the archive ships the code, the conversion script, a synthetic input and its expected outputs. See `analysis/README_J1.md`.
 
 ## What this archive is (J1 / 『理論と方法』) — read this first
-This is the archive for the Japanese-language article "何を統制すべきか――候補因果グラフで読み解く多元宇宙分析"
+This is the archive for the Japanese-language article "何を統制すべきか――「頑健性」を候補因果グラフで分解する"
 (*What Should We Control For? Interpreting Multiverse Analyses with Candidate Causal Graphs*), submitted to
 『理論と方法』(Sociological Theory and Methods). It is distinct from the general-purpose package `dagmv`
 (https://github.com/sokubo/dagmv, pinned at v0.1.3) and from the English companion paper's archive
 (`paper-multiverse-dag-replication`), which does not contain the J1 implementation.
 
 **The empirical section uses restricted individual-level data** — the Japanese Life Course Panel Surveys (JLPS-Y/M
-and JLPS-2019), obtained from the Social Science Japan Data Archive (SSJDA, University of Tokyo) under its terms of use.
+and the 2019 refresh sample). The file analysed here is the integrated release (waves 1-19) distributed to participants
+of the panel survey project, not a public release obtained by application to the Social Science Japan Data Archive
+(SSJDA, University of Tokyo); it therefore carries no SSJDA study number. Third parties obtain the same three waves by
+applying to SSJDA for PY130 (JLPS-Y waves 1-13, 2007-2019, doi:10.34500/SSJDA.PY130, including `PY130_add2` for the 2011
+additional sample and `PY130_refresh` for the 2019 refresh sample) and PM130 (JLPS-M waves 1-13, 2007-2019,
+doi:10.34500/SSJDA.PM130). Those are different releases, so respondent counts and cleaning need not match this file
+(here the 2019 refresh sample's first wave has 2,383 respondents; Naka and Miwa 2020 report 2,380).
 No individual record, and no file derived from individual records, is in this archive or in its Git history. What a
 reader can do here, and what requires a licence of their own, is stated in `analysis/README_J1.md` (§1 data and access,
 §4 run order) and summarised as follows.
@@ -46,14 +52,15 @@ reader can do here, and what requires a licence of their own, is stated in `anal
   expected outputs of running the current code on it, `analysis/synthetic_out/` (B = 500). The synthetic run is a
   pipeline check only: its numbers are not the paper's and must never be reported as such (its analysis sample is 6,625,
   the paper's is 3,832). The role tables of the three templates (§6) need no data: `Rscript j1_templates.R`.
-- **Licensed users**: obtain the integrated Stata file from SSJDA (study identifiers and the file-name version marker in
-  `analysis/README_J1.md` §1), convert it with `Rscript j1_convert_input.R <out.rds> <file.dta>` (read, lower-case names,
-  numeric codes, save — no merging), then run the sequence in `analysis/README_J1.md` §4. `j1_freeze_record.R` writes the
-  input identity (name, size, SHA-256; no content), the SHA-256 of every script and output, the environment, and a
-  comparison of the 56 numbers transcribed into the manuscript with the outputs.
+- **Users with data access of their own**: obtain the JLPS waves (the routes and version markers are in
+  `analysis/README_J1.md` §1), convert the file with `Rscript j1_convert_input.R <out.rds> <file.dta>` (read, lower-case
+  names, numeric codes, save — no merging), then run the sequence in `analysis/README_J1.md` §4. `j1_freeze_record.R`
+  writes the input identity (name, size, SHA-256; no content), the SHA-256 of every script and output, the environment,
+  and a comparison of the 62 numbers transcribed into the manuscript with the outputs. Byte-identical reproduction needs
+  the same integrated release; from an SSJDA public release this is a re-analysis with the same design and definitions.
 - **Aggregate outputs of the real data** (`results/`, `figures/`): withheld from this public archive until the
-  disclosure conditions of SSJDA and of the survey have been confirmed; suppression of cells below ten observations does
-  not by itself authorise release. Licensed users regenerate them with the sequence above.
+  disclosure conditions of the survey and of the data provider have been confirmed; suppression of cells below ten observations does
+  not by itself authorise release. Users with data access of their own regenerate them with the sequence above.
 
 Quick start (synthetic pipeline check; about 2 minutes; on Linux set `LC_ALL=C.UTF-8` for the Japanese labels):
 ```sh
@@ -68,4 +75,4 @@ Rscript j1_templates.R                                                  # output
 rerun of this synthetic sequence with a token-wise comparison against `synthetic_out/`.
 
 ## Citation
-大久保将貴 (2026)「何を統制すべきか――候補因果グラフで読み解く多元宇宙分析」『理論と方法』投稿中. / Okubo, S. (2026). What Should We Control For? Interpreting Multiverse Analyses with Candidate Causal Graphs. Under review at Sociological Theory and Methods.
+大久保将貴 (2026)「何を統制すべきか――「頑健性」を候補因果グラフで分解する」『理論と方法』投稿中. / Okubo, S. (2026). What Should We Control For? Interpreting Multiverse Analyses with Candidate Causal Graphs. Under review at Sociological Theory and Methods.
