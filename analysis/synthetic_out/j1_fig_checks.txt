@@ -1,0 +1,5 @@
+unlicensed specifications: 28
+  95% CI (est +/- 1.96 HC1 SE) excludes the W1/W2 value 0.541: 24
+  95% CI excludes the W3/W4 value 0.546: 24
+  95% CI excludes the naive mean 0.484: 12
+share of the 2007 cohort in the analysis sample: 0.590

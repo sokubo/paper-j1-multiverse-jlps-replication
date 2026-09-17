@@ -1,0 +1,26 @@
+control,role,dag
+occ,forbidden,W1 成績=交絡(R=G*)・婚姻=コライダー
+firm,forbidden,W1 成績=交絡(R=G*)・婚姻=コライダー
+regular,forbidden,W1 成績=交絡(R=G*)・婚姻=コライダー
+married,forbidden,W1 成績=交絡(R=G*)・婚姻=コライダー
+grades,required,W1 成績=交絡(R=G*)・婚姻=コライダー
+occ,forbidden,W2 成績=交絡(R=G*)・婚姻=精度変数
+firm,forbidden,W2 成績=交絡(R=G*)・婚姻=精度変数
+regular,forbidden,W2 成績=交絡(R=G*)・婚姻=精度変数
+married,optional,W2 成績=交絡(R=G*)・婚姻=精度変数
+grades,required,W2 成績=交絡(R=G*)・婚姻=精度変数
+occ,forbidden,W3 成績=回顧の子孫・婚姻=コライダー
+firm,forbidden,W3 成績=回顧の子孫・婚姻=コライダー
+regular,forbidden,W3 成績=回顧の子孫・婚姻=コライダー
+married,forbidden,W3 成績=回顧の子孫・婚姻=コライダー
+grades,forbidden,W3 成績=回顧の子孫・婚姻=コライダー
+occ,forbidden,W4 成績=回顧の子孫・婚姻=精度変数
+firm,forbidden,W4 成績=回顧の子孫・婚姻=精度変数
+regular,forbidden,W4 成績=回顧の子孫・婚姻=精度変数
+married,optional,W4 成績=回顧の子孫・婚姻=精度変数
+grades,forbidden,W4 成績=回顧の子孫・婚姻=精度変数
+occ,not identified,W5 成績=混合(G*潜在)・婚姻=コライダー
+firm,not identified,W5 成績=混合(G*潜在)・婚姻=コライダー
+regular,not identified,W5 成績=混合(G*潜在)・婚姻=コライダー
+married,not identified,W5 成績=混合(G*潜在)・婚姻=コライダー
+grades,not identified,W5 成績=混合(G*潜在)・婚姻=コライダー

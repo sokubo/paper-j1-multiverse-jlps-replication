@@ -1,0 +1,4 @@
+world,n_valid,valid_sets
+W5' 成績=混合・婚姻=精度変数,0,""
+"D1 成績=交絡, R=G*+誤差(汚染なし)",0,""
+"D2 成績=無関係(G*→educ のみ, 汚染なし)",4,(none) | married | grades | married;grades
