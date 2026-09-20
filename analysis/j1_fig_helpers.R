@@ -1,4 +1,4 @@
-# j1_fig_helpers.R — 図の描画関数(個票不要: 集計値 j1_specs.csv / j1_unlicensed.csv だけで描ける)。
+# j1_fig_helpers.R (v1.0, 2026-09-20: 凡例の用語を「許容」・「回顧報告=到達地位の子孫」に統一) — 図の描画関数(個票不要: 集計値 j1_specs.csv / j1_unlicensed.csv だけで描ける)。
 # j1_jlps_application.R(ローカル実行)と j1_make_figures.R(results/ の集計値から再描画)の双方から source される。
 j1_dev <- function(f, w, h) {
   if (requireNamespace("ragg", quietly = TRUE)) ragg::agg_png(f, width = w, height = h, units = "in", res = 300)
@@ -23,7 +23,7 @@ j1_draw_specmap <- function(fits, naive_mean, licensed_mean, file, n_label = NUL
   arrows(seq_len(K), f2$estimate - 1.96 * f2$se, seq_len(K), f2$estimate + 1.96 * f2$se, angle = 90, code = 3, length = 0.02, col = cols)
   abline(h = naive_mean, lty = 2); abline(h = licensed_mean, lty = 1, col = "grey30")
   legend("bottomright", bty = "n", cex = .78, pch = c(15, 17, 1, NA, NA), lty = c(NA, NA, NA, 2, 1), col = c("#2166ac", "#b2182b", "grey55", "black", "grey30"),
-         legend = c("W1・W2 が認可(成績=交絡, R=G*)", "W3・W4 が認可(成績=回顧の子孫)", "どの世界も認可しない(媒介変数を統制)", "素朴な多元宇宙の平均", "認可された仕様の平均"))
+         legend = c("W1・W2 が許容(成績=交絡, R=G*)", "W3・W4 が許容(回顧報告=到達地位の子孫)", "どの世界も許容しない(媒介変数を統制)", "素朴な多元宇宙の平均", "許容された仕様の平均"))
   if (!is.null(n_label)) mtext(n_label, side = 3, adj = 1, cex = .7, line = 0.1)
   par(mar = c(2.6, 4.2, 0.2, 1))
   plot(NA, xlim = c(0.5, K + 0.5), ylim = c(0.5, length(vars) + 0.5), xlab = "", ylab = "", xaxt = "n", yaxt = "n", bty = "n")
@@ -34,7 +34,7 @@ j1_draw_specmap <- function(fits, naive_mean, licensed_mean, file, n_label = NUL
   invisible(file)
 }
 
-## 図 1: 雛形 1 の三つの候補世界(成績=交絡 R=G* / 成績=回顧の子孫 / 混合)。G* は点線の円(潜在)。婚姻は省略。
+## 図 1: 雛形 1 の三つの候補世界(成績=交絡 R=G* / 回顧報告=到達地位の子孫 / 混合)。G* は点線の円(潜在)。婚姻は省略。
 j1_draw_dag <- function(file) {
   j1_dev(file, 7.5, 2.6); on.exit(dev.off())
   par(mfrow = c(1, 3), family = j1_font(), mar = c(0.3, 0.3, 1.6, 0.3), xpd = NA)
@@ -59,7 +59,7 @@ j1_draw_dag <- function(file) {
     if (show_R) node(P$R[1], P$R[2], "R")
   }
   panel("(a) 成績=交絡(W1・W2): R = G*", "G*=R", 1, TRUE, FALSE, FALSE)
-  panel("(b) 成績=回顧の子孫(W3・W4)", "G*", 3, FALSE, TRUE, TRUE)
+  panel("(b) 回顧報告=到達地位の子孫(W3・W4)", "G*", 3, FALSE, TRUE, TRUE)
   panel("(c) 混合(W5): 調整では識別不能", "G*", 3, TRUE, TRUE, TRUE)
   invisible(file)
 }
