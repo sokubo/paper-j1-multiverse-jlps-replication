@@ -1,7 +1,7 @@
-== analysis/Rscript j1_make_synthetic.R output/synthetic_regen/j1_synth_wide.rds 05:35:24
+== analysis/Rscript j1_make_synthetic.R output/synthetic_regen/j1_synth_wide.rds 21:28:38
 synthetic written: 8146 x 33 -> output/synthetic_regen/j1_synth_wide.rds 
 synthetic input regenerated identical() to shipped: TRUE 
-== analysis/Rscript j1_jlps_application.R synthetic/j1_synth_wide.rds output 05:35:24
+== analysis/Rscript j1_jlps_application.R synthetic/j1_synth_wide.rds output 21:28:39
    w1: all variables found
    w5: all variables found
 !! w13: not found: lq44
@@ -507,7 +507,7 @@ top-band sensitivity (n in top band: <10 ):
 16: 0.5266382 0.01535485           0.005671717
 
 bootstrap engine check: max |lm.fit - fit_spec| = 0.00e+00
-bootstrap (pooled, B=500) done in 55 s
+bootstrap (pooled, B=500) done in 56 s
 bootstrap replicates with all 32 estimates finite: 500 of 500
 grades categorical (4 df): (none) 0.5464, grades 0.5404, contrast 0.0060 (linear-score contrast 0.0056)
 
@@ -670,7 +670,7 @@ measurement calibration (r2 = residualized Corr^2(E,R)):
 7:   0.70 0.005030704 0.007186721         0.5383545              0.5383720
 8:   0.65 0.005030704 0.007739545         0.5377288              0.5377525
 done -> output 
-== analysis/Rscript j1_templates.R 05:36:32
+== analysis/Rscript j1_templates.R 21:29:48
 
 #### 雛形1 学歴と所得(W1–W5) 
 
