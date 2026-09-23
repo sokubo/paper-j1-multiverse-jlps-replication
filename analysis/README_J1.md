@@ -1,4 +1,4 @@
-# J1『理論と方法』— 実証節(§7)の再現経路 / Reproduction path for the JLPS analysis
+# J1 — 実証節の再現経路 / Reproduction path for the JLPS analysis
 
 対象原稿: 「何を統制すべきか――「頑健性」を候補因果グラフで分解する」v0.9(2026-09-17; v0.8 の題名「候補因果グラフで読み解く多元宇宙分析」、v0.6 までの題名「回顧的な中学成績を統制すべきか…」)。
 英語 companion(Okubo 2026, arXiv:2609.16618)の公開リポジトリ `paper-multiverse-dag-replication` とも、汎用パッケージ `dagmv` とも別物であり、
@@ -39,7 +39,7 @@ J1 の数値はすべてここに記す経路で生成される。**J1 専用の
 
 ## 4. 実行順・環境・乱数 / Run order, environment, seeds
 ```sh
-cd paper/jp/J1-rironhoho/analysis
+cd analysis
 Rscript j1_convert_input.R <jlps_all_wide.rds> <統合 .dta>        # 提供版(統合 .dta) → 分析用 RDS(プロジェクト外に保存; 読込・小文字化・数値化・保存のみ)
 Rscript j1_check_source.R <統合 .dta> ../results                  # 設問文言・選択肢・分布の照合ログ (results/j1_wording_check.txt), 反復回顧の有無 (B), 本文の 2 文の可否 (C)
 Rscript j1_jlps_application.R <jlps_all_wide.rds> ../results     # 入力検査・32 仕様・分解・ブートストラップ・感度・図 (下記の出力一覧; 約 25 分)
@@ -103,7 +103,7 @@ Linux では日本語ラベルのために `LC_ALL=C.UTF-8` を付ける(macOS �
 分母は `j1_flow.csv` の段階 `3_pos_income`(全体 4,751)。本文の「親学歴(欠測 10%)・企業規模(同 9%)」はこの全体列である。検証済みの `results/` を上書きせずに再生成するには、別の出力先に走らせてから複写する:
 
 ```sh
-cd paper/jp/J1-rironhoho/analysis
+cd analysis
 Rscript j1_jlps_application.R ~/Documents/JLPS_data/work_jp/jlps_all_wide.rds /tmp/j1_rerun
 cp /tmp/j1_rerun/j1_missing_shares.csv ../results/
 ```

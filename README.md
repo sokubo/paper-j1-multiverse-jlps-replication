@@ -1,7 +1,7 @@
-# Replication archive: What Should We Control For? Interpreting Multiverse Analyses with Candidate Causal Graphs (『理論と方法』)
+# Replication archive: What Should We Control For? Interpreting Multiverse Analyses with Candidate Causal Graphs
 
 Code and (public) data to reproduce the tables and figures of the paper.
-Manuscript for 『理論と方法』(Sociological Theory and Methods); a preprint version may be posted separately. Author: Shoki Okubo (Toyo University).
+Unpublished manuscript (in Japanese); a preprint version may be posted separately. Author: Shoki Okubo (Toyo University).
 
 ## Contents
 - analysis
@@ -13,7 +13,7 @@ Manuscript for 『理論と方法』(Sociological Theory and Methods); a preprin
 release-check records (`RELEASE_CHECK*`), which are written after the manifest.
 
 ## Checked commit and release record
-Computational commit checked against the manuscript: `733bca6b9dd051a6348f6d71573d1744c77870de` — see `RELEASE_CHECK.md` (with `RELEASE_CHECK_run.log` and `RELEASE_CHECK_sessionInfo.txt` when a clean-copy run was made). Later commits change documentation and the release record only — `git diff --stat 733bca6b9dd051a6348f6d71573d1744c77870de HEAD` lists them — so the scripts, data and outputs are those of the checked commit; after any change to code or outputs the release check is rerun and this line is regenerated.
+Computational commit checked against the manuscript: `4f9d2246b63e434358a51cfd7b76dcfc7b269319` — see `RELEASE_CHECK.md` (with `RELEASE_CHECK_run.log` and `RELEASE_CHECK_sessionInfo.txt` when a clean-copy run was made). Later commits change documentation and the release record only — `git diff --stat 4f9d2246b63e434358a51cfd7b76dcfc7b269319 HEAD` lists them — so the scripts, data and outputs are those of the checked commit; after any change to code or outputs the release check is rerun and this line is regenerated.
 Tag matching the manuscript version: `j1-v1.0` (the journal submission is anonymised, so there the URL and tag are given in the separate sheet, not in the manuscript body; the preprint version names this repository and tag in §5.1; §5.1 and §6(6) refer to the fixed-version tag). No third-party licensed user has re-run the JLPS analysis; real-data reproduction rests on the author's frozen rerun record (`analysis/RUN_LOG_J1.md`, `j1_freeze_record.txt`).
 
 ## How to run
@@ -28,10 +28,10 @@ Tag matching the manuscript version: `j1-v1.0` (the journal submission is anonym
    build itself (Quarto) is not part of the numerical reproduction.
 3. No data file of the empirical section is included: the JLPS individual records are restricted and their aggregate outputs are withheld pending the disclosure check; the archive ships the code, the conversion script, a synthetic input and its expected outputs. See `analysis/README_J1.md`.
 
-## What this archive is (J1 / 『理論と方法』) — read this first
+## What this archive is (J1) — read this first
 This is the archive for the Japanese-language article "何を統制すべきか――「頑健性」を候補因果グラフで分解する"
-(*What Should We Control For? Interpreting Multiverse Analyses with Candidate Causal Graphs*), submitted to
-『理論と方法』(Sociological Theory and Methods). It is distinct from the general-purpose package `dagmv`
+(*What Should We Control For? Interpreting Multiverse Analyses with Candidate Causal Graphs*), an unpublished
+manuscript. It is distinct from the general-purpose package `dagmv`
 (https://github.com/sokubo/dagmv, pinned at v0.1.3) and from the English companion paper's archive
 (`paper-multiverse-dag-replication`), which does not contain the J1 implementation.
 
@@ -82,4 +82,4 @@ Rscript j1_templates.R                                                  # output
 rerun of this synthetic sequence with a token-wise comparison against `synthetic_out/`.
 
 ## Citation
-大久保将貴 (2026)「何を統制すべきか――「頑健性」を候補因果グラフで分解する」『理論と方法』投稿中. / Okubo, S. (2026). What Should We Control For? Interpreting Multiverse Analyses with Candidate Causal Graphs. Under review at Sociological Theory and Methods.
+大久保将貴 (2026)「何を統制すべきか――「頑健性」を候補因果グラフで分解する」未刊行原稿. / Okubo, S. (2026). What Should We Control For? Interpreting Multiverse Analyses with Candidate Causal Graphs. Unpublished manuscript (in Japanese).
