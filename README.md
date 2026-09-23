@@ -13,7 +13,7 @@ Unpublished manuscript (in Japanese); a preprint version may be posted separatel
 release-check records (`RELEASE_CHECK*`), which are written after the manifest.
 
 ## Checked commit and release record
-Computational commit checked against the manuscript: not yet checked (a release check is run after the first publication; see `RELEASE_CHECK.md` once present)
+Computational commit checked against the manuscript: `46be81461aa436f1bab774e91757b35e89b44901` — see `RELEASE_CHECK.md` (with `RELEASE_CHECK_run.log` and `RELEASE_CHECK_sessionInfo.txt` when a clean-copy run was made). Later commits change documentation and the release record only — `git diff --stat 46be81461aa436f1bab774e91757b35e89b44901 HEAD` lists them — so the scripts, data and outputs are those of the checked commit; after any change to code or outputs the release check is rerun and this line is regenerated.
 Tag matching the manuscript version: `j1-v1.1` (the journal submission is anonymised, so there the URL and tag are given in the separate sheet, not in the manuscript body; the preprint version names this repository and tag in §5.1; §5.1 and §6(6) refer to the fixed-version tag; the earlier tags `j1-v0.9` and `j1-v1.0` are kept unchanged -- see "Versions (tags) and what changed" below). No third-party licensed user has re-run the JLPS analysis; real-data reproduction rests on the author's frozen rerun record (`analysis/RUN_LOG_J1.md`, `j1_freeze_record.txt`).
 
 ## How to run
