@@ -1,4 +1,4 @@
-# j1_jlps_application.R — J1『理論と方法』の実証節: JLPS 三標本の初回調査(2007 w1 / 2011 w5 / 2019 w13)を
+# j1_jlps_application.R — J1(日本語論文)の実証節: JLPS 三標本の初回調査(2007 w1 / 2011 w5 / 2019 w13)を
 # プールした横断データで、大学在籍(最終在籍校が大学・大学院)の所得係数の多元宇宙を候補 DAG で規律づける。
 # RUNS ONLY ON THE LICENSED LOCAL MACHINE(案A)。個票は書き出さず、N<10 抑制済みの集計値と図のみ results/ に出力する。
 # Usage: Rscript j1_jlps_application.R <jlps_all_wide.rds> <results_dir>

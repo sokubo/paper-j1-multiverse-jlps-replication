@@ -1,4 +1,4 @@
-# j1_fig_helpers.R (v1.0, 2026-09-20: 凡例の用語を「許容」・「回顧報告=到達地位の子孫」に統一) — 図の描画関数(個票不要: 集計値 j1_specs.csv / j1_unlicensed.csv だけで描ける)。
+# j1_fig_helpers.R (v1.0, 2026-09-20: 凡例の用語を「許容」・「回顧報告=到達地位の子孫」に統一; v1.1, 2026-09-23: 図の来歴の記録を追加、描画は不変) — 図の描画関数(個票不要: 集計値 j1_specs.csv / j1_unlicensed.csv だけで描ける)。
 # j1_jlps_application.R(ローカル実行)と j1_make_figures.R(results/ の集計値から再描画)の双方から source される。
 j1_dev <- function(f, w, h) {
   if (requireNamespace("ragg", quietly = TRUE)) ragg::agg_png(f, width = w, height = h, units = "in", res = 300)
@@ -62,4 +62,28 @@ j1_draw_dag <- function(file) {
   panel("(b) 回顧報告=到達地位の子孫(W3・W4)", "G*", 3, FALSE, TRUE, TRUE)
   panel("(c) 混合(W5): 調整では識別不能", "G*", 3, TRUE, TRUE, TRUE)
   invisible(file)
+}
+
+## v1.1(2026-09-23, 知人査読第 5 回 R5-m2): 図の来歴。PNG のバイトは描画環境(R・グラフィック装置・フォント)で変わるので、
+## 図の対応を (1) 数値の入力(集計 CSV の SHA-256)、(2) ラベルの内容(描画コード j1_fig_helpers.R の SHA-256)、(3) 描画環境
+## に分けて記録する。j1_make_figures.R が図と同じフォルダに j1_fig_provenance.txt を書く(日時は含めない)。
+j1_sha256 <- function(f) {
+  if (!file.exists(f)) return(NA_character_)
+  if (exists("sha256sum", asNamespace("tools"))) return(unname(as.character(get("sha256sum", asNamespace("tools"))(f))))
+  if (requireNamespace("openssl", quietly = TRUE)) return(paste(as.character(unclass(openssl::sha256(file(f)))), collapse = ""))
+  r <- tryCatch(suppressWarnings(system2("shasum", c("-a", "256", shQuote(f)), stdout = TRUE, stderr = FALSE)), error = function(e) character(0))
+  if (!length(r)) r <- tryCatch(suppressWarnings(system2("sha256sum", shQuote(f), stdout = TRUE, stderr = FALSE)), error = function(e) character(0))
+  if (length(r)) sub(" .*", "", r[1]) else NA_character_
+}
+j1_fig_inputs <- c("j1_specs.csv", "j1_unlicensed.csv", "j1_descriptives.csv")
+j1_fig_files <- c("j1_fig_dag.png", "j1_fig_specmap.png")
+j1_write_fig_provenance <- function(figdir, resdir, helper_file) {
+  dev <- if (requireNamespace("ragg", quietly = TRUE)) paste0("ragg ", as.character(utils::packageVersion("ragg"))) else "grDevices::png"
+  lines <- c("# j1 figure provenance (written by j1_make_figures.R): data inputs, drawing code and drawing environment of the PNGs in this folder",
+             sprintf("input  %-20s %s", j1_fig_inputs, vapply(file.path(resdir, j1_fig_inputs), j1_sha256, "")),
+             sprintf("code   %-20s %s", basename(helper_file), j1_sha256(helper_file)),
+             sprintf("env    R_%s.%s %s %s font=%s", R.version$major, R.version$minor, R.version$platform, gsub(" ", "_", dev), gsub(" ", "_", j1_font())),
+             sprintf("output %-20s %s", j1_fig_files, vapply(file.path(figdir, j1_fig_files), j1_sha256, "")))
+  writeLines(lines, file.path(figdir, "j1_fig_provenance.txt"))
+  invisible(lines)
 }

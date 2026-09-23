@@ -16,6 +16,7 @@ analysis/synthetic_out/j1_decomp.txt
 analysis/synthetic_out/j1_descriptives.csv
 analysis/synthetic_out/j1_fig_checks.txt
 analysis/synthetic_out/j1_fig_dag.png
+analysis/synthetic_out/j1_fig_provenance.txt
 analysis/synthetic_out/j1_fig_specmap.png
 analysis/synthetic_out/j1_flow.csv
 analysis/synthetic_out/j1_implicit_weights.csv

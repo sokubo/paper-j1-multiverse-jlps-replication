@@ -1,9 +1,9 @@
 # J1 — 実証節の再現経路 / Reproduction path for the JLPS analysis
 
-対象原稿: 「何を統制すべきか――「頑健性」を候補因果グラフで分解する」v0.9(2026-09-17; v0.8 の題名「候補因果グラフで読み解く多元宇宙分析」、v0.6 までの題名「回顧的な中学成績を統制すべきか…」)。
+対象原稿: 「何を統制すべきか：「頑健性」を因果グラフの候補ごとに分解する」v1.1(2026-09-23; v0.9–v1.0 の題名「何を統制すべきか――「頑健性」を候補因果グラフで分解する」、v0.8 の題名「候補因果グラフで読み解く多元宇宙分析」、v0.6 までの題名「回顧的な中学成績を統制すべきか…」)。本文の節番号は v1.0 以降のもの(§4 雛形、§5 実証、§5.1 データと設計、§5.2 結果、§5.3 読み方)。
 英語 companion(Okubo 2026, arXiv:2609.16618)の公開リポジトリ `paper-multiverse-dag-replication` とも、汎用パッケージ `dagmv` とも別物であり、
 J1 の数値はすべてここに記す経路で生成される。**J1 専用の公開アーカイブ**: https://github.com/sokubo/paper-j1-multiverse-jlps-replication
-(固定版はタグ `j1-v1.0`(v0.9 の改訂版; v1.0 の差は補助スクリプト `j1_freeze_record.R`・図の凡例 `j1_fig_helpers.R`・文書のみで、分析コードと出力は不変); 公開・タグ付けの手順は `github/make_replication_archives.sh` と `github/publish_replication.sh`、
+(固定版はタグ `j1-v1.1`。各タグの差は下の 6 節と公開 README の「Versions (tags) and what changed」: v1.1 は数値計算のコードの実行行を変えず(冒頭コメントのみ)、図の来歴の記録を追加し、合成出力の図 2 枚を現行の描画コードで描き直した版; 旧タグ `j1-v0.9`・`j1-v1.0` は動かさない); 公開・タグ付けの手順は `github/make_replication_archives.sh` と `github/publish_replication.sh`、
 クリーンコピーでの合成データ再実行の記録は同アーカイブの `RELEASE_CHECK.md`)。
 
 ## 1. データと利用条件 / Data and access
@@ -42,39 +42,40 @@ J1 の数値はすべてここに記す経路で生成される。**J1 専用の
 cd analysis
 Rscript j1_convert_input.R <jlps_all_wide.rds> <統合 .dta>        # 提供版(統合 .dta) → 分析用 RDS(プロジェクト外に保存; 読込・小文字化・数値化・保存のみ)
 Rscript j1_check_source.R <統合 .dta> ../results                  # 設問文言・選択肢・分布の照合ログ (results/j1_wording_check.txt), 反復回顧の有無 (B), 本文の 2 文の可否 (C)
-Rscript j1_jlps_application.R <jlps_all_wide.rds> ../results     # 入力検査・32 仕様・分解・ブートストラップ・感度・図 (下記の出力一覧; 約 25 分)
-Rscript j1_make_figures.R ../results ../results                  # results/ の集計値から図 1・図 2 を再描画(個票不要; 第 2 引数を ../figures にすると原稿用の採用版を書く)
-Rscript j1_templates.R                                           # §6 雛形 1–3 の役割分類表 → output/j1_templates_output.txt(データ不要)
+Rscript j1_jlps_application.R <jlps_all_wide.rds> ../results     # 入力検査・32 仕様・分解・ブートストラップ・感度・図 (下記の出力一覧; B = 500 でライセンス機で約 1–2 分)
+Rscript j1_make_figures.R ../results ../results                  # results/ の集計値から図 1・図 2 を再描画し j1_fig_provenance.txt を書く(個票不要; 第 2 引数を ../figures にすると原稿用の採用版)
+Rscript j1_templates.R                                           # §4 雛形 1–3 の役割分類表 → output/j1_templates_output.txt(データ不要)
 Rscript j1_freeze_record.R <jlps_all_wide.rds> ../results [<統合 .dta>] [<実行した変換スクリプト>]  # 凍結記録: 入力の識別・コードの SHA-256・環境・出力の SHA-256・図の対応(results/ 描画・figures/ 採用版・Word 埋込)・変換スクリプトの照合・本文 61 値との照合 → results/j1_freeze_record.txt/.csv(.dta と変換スクリプトは省略可)
 ```
-合成データでの動作確認(個票不要; **JLPS の数値の再現ではない**): `Rscript j1_make_synthetic.R && Rscript j1_jlps_application.R synthetic/j1_synth_wide.rds synthetic_out`。
-Linux では日本語ラベルのために `LC_ALL=C.UTF-8` を付ける(macOS は不要)。図の PNG は描画フォントに依存し(macOS = Hiragino Sans、Linux = Noto Sans CJK JP)、画素の一致はプラットフォーム内でのみ期待できる。原稿に採用した `figures/` の 2 図と、実行時に `results/` に描かれた 2 図、Word に埋め込まれた画像の対応(SHA-256)は凍結記録の 4b 節に記録する(v1.0; 知人査読第 4 回 R4-m3)。
+合成データでの動作確認(個票不要; **JLPS の数値の再現ではない**): `Rscript j1_make_synthetic.R && Rscript j1_jlps_application.R synthetic/j1_synth_wide.rds synthetic_out && Rscript j1_make_figures.R synthetic_out synthetic_out`。
+Linux では日本語ラベルのために `LC_ALL=C.UTF-8` を付ける(macOS は不要)。図の PNG は描画環境(R・グラフィック装置・フォント; macOS = Hiragino Sans、Linux = Noto Sans CJK JP)に依存し、バイトの一致は同じ環境でのみ期待できる。そこで `j1_make_figures.R` は図と同じフォルダに `j1_fig_provenance.txt`(入力の集計 CSV 3 本と描画コード `j1_fig_helpers.R` の SHA-256、描画環境、PNG の SHA-256)を書き、図の対応を**数値の入力・描画コード(ラベルの内容)・描画環境**に分けて確かめる(v1.1; 知人査読第 5 回 R5-m2)。原稿に採用した `figures/` の 2 図、`results/` に描いた 2 図、Word に埋め込まれた画像の対応は凍結記録の 4b 節に記録し、ハッシュの不一致だけから「字体の差」とは判定しない。
 - 環境: R ≥ 4.3、`data.table`、`dagmv`(≥ 0.1.3; `remotes::install_github("sokubo/dagmv@v0.1.3")`)、`haven`(check_source のみ)。実行環境の `sessionInfo()` は `results/j1_sessionInfo.txt`。
-- 乱数: `SEED = 20260905`、ブートストラップ `B = 500`(環境変数 `J1_B` で変更可)。個人単位・コホート内層化の再標本化; 区間はパーセンタイル(q025, q975)、SE はブートストラップ SD。`j1_bootstrap.csv` の `n_success` は**その行の標本・統計量について有限だった反復数**(v4; v3 まではプール 32 仕様の成功反復数を全行に複写していた。その値は `n_all32_finite_pooled` 列に残す)。成績カテゴリ版のブートストラップ(`pooled_25_45_grades_categorical` 行)は乱数種を戻して**同じ再標本**を使うので、線形得点版との差の行 `delta_contrast_linear_minus_categorical` は対応のある区間である。
+- 乱数: `SEED = 20260905`、ブートストラップ `B = 500`(環境変数 `J1_B` で変更可)。標本(変数 `cohort` = 2007・2011・2019 年標本)ごとに個人を再抽出する層化ブートストラップ; 区間はパーセンタイル(q025, q975)、SE はブートストラップ SD。`j1_bootstrap.csv` の `n_success` は**その行の標本・統計量について有限だった反復数**(v4; v3 まではプール 32 仕様の成功反復数を全行に複写していた。その値は `n_all32_finite_pooled` 列に残す)。成績カテゴリ版のブートストラップ(`pooled_25_45_grades_categorical` 行)は乱数種を戻して**同じ再標本**を使うので、線形得点版との差の行 `delta_contrast_linear_minus_categorical` は対応のある区間である。
 - 標準誤差: HC1(不均一分散に頑健、クラスタなし)。抽出地点の識別子は提供版になく、ブートストラップも地点内相関は回復しない。
 - 秘匿: `MIN_CELL = 10`; N < 10 のセルは NA。
 
 ## 5. 出力と本文の対応 / Output map
 | 出力(`results/`) | 内容 | 本文 |
 |---|---|---|
-| `j1_flow.csv` | 標本フロー(段階 × コホート; N・大学在籍率・女性率・年齢範囲) | 注1、§7.1 |
-| `j1_descriptives.csv` | 分析標本の記述統計 | §7.1 |
-| `j1_specs.csv` | 32 仕様の推定値・HC1 SE・p・許容する世界 | 図 2、§7.2 |
-| `j1_validity.csv` | 32 仕様 × W1–W5 の許容仕様の対応表 | 表 1、§7.1 |
-| `j1_roles.csv`, `j1_world_diagnostics.csv` | 役割分類、診断世界 | 表 1、§6.1 |
+| `j1_flow.csv` | 標本フロー(段階 × コホート; N・大学在籍率・女性率・年齢範囲) | 注1、§5.1 |
+| `j1_descriptives.csv` | 分析標本の記述統計 | §5.1 |
+| `j1_specs.csv` | 32 仕様の推定値・HC1 SE・p・許容する世界 | 図 2、§5.2 |
+| `j1_validity.csv` | 32 仕様 × W1–W5 の許容仕様の対応表 | 表 1、§5.1 |
+| `j1_roles.csv`, `j1_world_diagnostics.csv` | 役割分類、診断世界 | 表 1、§4.1 |
 | `j1_decomp.txt`, `j1_unlicensed.csv`, `j1_implicit_weights.csv` | 素朴・世界別指標、ρ、暗黙の重み(3/8, 1/8, 3/8, 1/8) | 表 2 |
-| `j1_bootstrap.csv` | 世界間対比・婚姻対比・世界別平均・ρ のブートストラップ(プール、コホート別、共通支持 25–32、補足 25–31; v4 は成績カテゴリ版の行を追加) | 表 2 対比行、§7.2、注2 |
-| `j1_by_cohort.csv` | コホート別の世界別平均 | §7.2 |
-| `j1_support.csv` | 共通支持 25–32(と 25–31)、最大標本、働く学生除外、所得区間中点、コホート別年齢範囲 | 注2、注3、§7.1 |
+| `j1_bootstrap.csv` | 世界間対比・婚姻対比・世界別平均・ρ のブートストラップ(プール、コホート別、共通支持 25–32、補足 25–31; v4 は成績カテゴリ版の行を追加) | 表 2 対比行、§5.2、注2 |
+| `j1_by_cohort.csv` | コホート別の世界別平均 | §5.2 |
+| `j1_support.csv` | 共通支持 25–32(と 25–31)、最大標本、働く学生除外、所得区間中点、コホート別年齢範囲 | 注2、注3、§5.1 |
 | `j1_income_sens.csv` | 最上位区分の割当感度 | 注3 |
-| `j1_fig_checks.txt` | 図 2 の区間比較の件数(28 仕様中 0.168 を含まない件数など)を出力値から算出 | §7.2 |
-| `j1_measurement_calibration.csv` | 統制変数で残差化した E・R の相関二乗と、λ ごとの 2 パラメータ補正値 | §7.2(較正) |
-| `j1_wording_check.txt` | 設問・選択肢の三波比較、反復回顧の有無 | §7.1 |
-| `j1_missing_shares.csv` | 分析標本に入る前の欠測割合(全体・コホート別) | §7.1「親学歴(欠測 10%)・企業規模(同 9%)」 |
-| `j1_input_check.csv` | 行数・ID の一意性・標本割当(v4) | §7.1 |
+| `j1_fig_checks.txt` | 図 2 の区間比較の件数(28 仕様中 0.168 を含まない件数など)を出力値から算出 | §5.2 |
+| `j1_measurement_calibration.csv` | 統制変数で残差化した E・R の相関二乗と、λ ごとの 2 パラメータ補正値 | §5.2(較正) |
+| `j1_wording_check.txt` | 設問・選択肢の三波比較、反復回顧の有無 | §5.1 |
+| `j1_missing_shares.csv` | 分析標本に入る前の欠測割合(全体・コホート別) | §5.1「親学歴(欠測 10%)・企業規模(同 9%)」 |
+| `j1_input_check.csv` | 行数・ID の一意性・標本割当(v4) | §5.1 |
 | `j1_support.csv` の `main_sample_grades_categorical` 行、`j1_bootstrap.csv` の `*_grades_categorical` 行 | 成績を 4 自由度のカテゴリ変数にした許容 4 仕様と、対応のあるブートストラップ(v4, R3-O1) | 注 3 |
 | `j1_freeze_record.txt/.csv` | 凍結記録(入力の識別・コードと出力の SHA-256・環境・本文値との照合) | `RUN_LOG_J1.md` |
 | `j1_fig_dag.png`, `j1_fig_specmap.png` | 図 1、図 2 | |
+| `j1_fig_provenance.txt` | 図の来歴: 入力 CSV 3 本・描画コード・PNG の SHA-256 と描画環境(`j1_make_figures.R` が書く; v1.1) | 凍結記録 4b |
 
 表 2 の「頑健性比」は 平均 ÷ √(SE² の平均 + モデリング SD²)(dagmv `mv_decompose()`; SE² の平均であって平均 SE の二乗ではない)。
 
@@ -83,12 +84,13 @@ Linux では日本語ラベルのために `LC_ALL=C.UTF-8` を付ける(macOS �
 - `j1_jlps_application.R` v3(2026-09-17): v2 との差は、許容仕様の対応表・区分代表値と中点・働く学生除外・成功反復数と区間方式・図 2 の出力値照合・測定較正量・sessionInfo の追加(v2 = `j1_jlps_application_v2_backup.R`)。
 - **v4 のローカル再実行(2026-09-17 23:28–23:29)**: `j1_specs.csv`・`j1_flow.csv`・`j1_decomp.txt`・`j1_by_cohort.csv`・`j1_income_sens.csv`・`j1_fig_checks.txt`・`j1_measurement_calibration.csv` は v3 実行とバイト一致。v4 が足したのは `j1_input_check.csv` と、成績カテゴリ版の 5 行(`j1_bootstrap.csv`)・4 行(`j1_support.csv`)のみ。注 3 の値は原稿 v0.9 に転記した。
 - `j1_check_source.R` v2: 旧版の単一交絡近似 $0.245-0.077/\lambda$ の分岐を削除し、末尾の開示に関する結語を「集計値であることだけでは公開可能とならない」に訂正。`j1_templates.R` v2: 雛形 1 を本文 v0.8 の W1–W5 に更新(旧版は `j1_templates_v1_backup.R`)。`j1_make_synthetic.R` v2: 出力先を引数で指定可。
-- `synthetic_out/` は v4 の全出力(B = 500)。`j1_worked_example.R` は §5 の説明用シミュレーションで、本文の数値は生成しない。
+- `synthetic_out/` は現行コードの全出力(B = 500; v1.1 で再実行し、CSV/TXT 17 件は v1.0 の同梱版とバイト一致、図 2 枚は現行の描画コードで描き直し、`j1_fig_provenance.txt` を追加)。`j1_worked_example.R` は枠組みの説明用シミュレーションで、本文の数値は生成しない。
 - **開示**: `results/` は個票を含まず N < 10 のセルを伏せた集計値だが、**それだけで公開可能とはならない**。公開アーカイブへの収録は当該調査とデータ提供元の利用条件と当該調査の条件に照らした開示確認の後に行う(確認前は `results/`・`figures/` を公開アーカイブから除く; `make_replication_archives.sh` の `J1_INCLUDE_RESULTS=1`)。 **第三者(著者以外のデータへのアクセスを持つ利用者)による JLPS 個票での再実行は行われておらず、実データの再現は著者のローカル実行記録(`RUN_LOG_J1.md`、`results/j1_freeze_record.txt`)による。**
 - `j1_freeze_record.R` v1.0(2026-09-20, 知人査読第 4 回 R4-m3): 4b 節(図の来歴: `results/`・`figures/`・Word 埋込画像の SHA-256 と一致判定)、4c 節(実行した変換スクリプト `jp_combine_wide.R` と同梱 `j1_convert_input.R` を `##` コメント行を除いて照合——両者の差はヘッダのコメントのみ)を追加し、本文値の照合を v1.0 の 61 値に更新(v0.9 で照合していた「媒介変数 3 つを統制した係数 0.061」の文を本文から削除したため 1 値減)。`j1_fig_helpers.R` v1.0: 凡例の用語を本文に合わせて「許容」「回顧報告=到達地位の子孫」に統一(描画データは不変)。公開タグ `j1-v0.9` の同梱 `j1_freeze_record.R` は引数順の古い版で、凍結記録を作った版と一致していなかった——v1.0 のタグで補助スクリプトと使用法と記録を一致させる。
+- **v1.1(2026-09-23, 知人査読第 5 回 R5-m2)**: **数値計算のコード**(`j1_jlps_application.R`・`j1_convert_input.R`・`j1_make_synthetic.R`・`j1_templates.R`)の実行行は不変で、`j1_jlps_application.R` の冒頭コメントだけを直した(誌名を除く; `j1_worked_example.R` の冒頭コメントも同様)。**原データの照合** `j1_check_source.R`(v2.1)は冒頭コメントの作業フォルダ名と、出力文の指示の言い回し 2 か所を中立にした(照合の内容と判定は不変; `results/j1_wording_check.txt` は v1.1 の実行で作り直す)。**描画コード** `j1_fig_helpers.R`・`j1_make_figures.R` に図の来歴 `j1_fig_provenance.txt` の書き出しを加え(描画そのものは不変)、**補助スクリプト** `j1_freeze_record.R` の 4b 節はその来歴で「数値の入力・描画コード・描画環境」を分けて記録する。v1.0 の公開版では `synthetic_out/` の図 2 枚が v0.9 の凡例のまま残っていた(描画コードの更新後に描き直していなかった)ので、v1.1 で描き直した。コード内のコメントや出力文にある節番号は、書いた時点の原稿(v0.9 まで)の番号のままである(§6→§4、§7→§5、§9→§7)。
 - 著者(権限を与えられた利用者)によるローカル再実行の日時と本文値との照合は `RUN_LOG_J1.md` に記録する。
 
-**`j1_missing_shares.csv` について**: この出力行はスクリプト v3 に 2026-09-17 の実行後に加えたため、同日の実行では書かれなかった。**2026-09-17 に別の出力先へ再実行して生成し、このファイルだけを `results/` に複写した**(`RUN_LOG_J1.md`)。値は本文 §7.1 の記述と一致する:
+**`j1_missing_shares.csv` について**: この出力行はスクリプト v3 に 2026-09-17 の実行後に加えたため、同日の実行では書かれなかった。**2026-09-17 に別の出力先へ再実行して生成し、このファイルだけを `results/` に複写した**(`RUN_LOG_J1.md`)。値は本文 §5.1 の記述と一致する:
 
 | 変数 | 全体 | 2007 | 2011 | 2019 |
 |---|---:|---:|---:|---:|
@@ -108,4 +110,4 @@ Rscript j1_jlps_application.R ~/Documents/JLPS_data/work_jp/jlps_all_wide.rds /t
 cp /tmp/j1_rerun/j1_missing_shares.csv ../results/
 ```
 
-このファイルはスクリプト 117 行目、ブートストラップより前に書かれるので実行開始 1 分以内に生成される。
+このファイルはスクリプト(v4 以降)130 行目、ブートストラップより前に書かれるので実行開始 1 分以内に生成される。

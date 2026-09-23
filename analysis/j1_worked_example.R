@@ -1,4 +1,4 @@
-## j1_worked_example.R -- 『理論と方法』解説論文 §5 の実行例(設計されたシミュレーション。実データではない)
+## j1_worked_example.R -- J1 の枠組みの説明用の実行例(設計されたシミュレーション。実データではない。本文の数値は生成しない)
 ## 使い方: Rscript j1_worked_example.R   -> output/j1_example_output.txt, output/j1_example_plot.png
 suppressPackageStartupMessages(library(dagmv))
 set.seed(2026)

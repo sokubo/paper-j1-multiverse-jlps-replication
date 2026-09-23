@@ -22,5 +22,5 @@ loaded via a namespace (and not attached):
 [1] compiler_4.6.0    cli_3.6.6         ragg_1.5.2        textshaping_1.0.5
 [5] lifecycle_1.0.5   rlang_1.2.0       systemfonts_1.3.2
 
-run: 2026-09-17 23:30
+run: 2026-09-23 18:32
 B = 500  seed = 20260905  MIN_CELL = 10

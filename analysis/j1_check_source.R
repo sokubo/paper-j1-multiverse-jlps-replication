@@ -6,8 +6,9 @@
 #
 # 個票は一切書き出さない。出力は集計値のみで、N<10 のセルは NA に伏せる。
 # v2(2026-09-17, 知人査読第 3 回 R3-m2): 旧版の単一交絡近似の分岐を削除、末尾の開示に関する結語を訂正。
+# v2.1(2026-09-23): 出力文の指示の言い回しを中立にした(照合の内容と判定は不変)。
 # 実行(ライセンス機):
-#   cd ~/Documents/Claude/Projects/VariableSelection/paper/jp/J1-rironhoho/analysis
+#   cd analysis   (このアーカイブの analysis/ フォルダ)
 #   Rscript j1_check_source.R ~/Documents/JLPS_data/raw/<統合ファイル>.dta ../results
 # 出力: ../results/j1_wording_check.txt(通し読み用)、../results/j1_grades_retest.csv(再テストの集計)
 suppressPackageStartupMessages({ library(haven); library(data.table) })
@@ -145,11 +146,11 @@ if (nrow(retest)) { fwrite(retest, file.path(outdir, "j1_grades_retest.csv"))
 
 say("\n", strrep("=", 78), "\n(C) 本文の二つの文が書けるか\n", strrep("=", 78))
 say("\n1) §7.1「三つの標本の初回調査…は同一の設問で学歴・中学成績・親学歴・現職・所得を尋ねており」")
-if (length(flags)) { say("   → 上の (A) に !! があるので、このままでは書けない。該当箇所を Claude に伝えて文言を直す。")
+if (length(flags)) { say("   → 上の (A) に !! があるので、このままでは書けない。該当箇所を確かめて本文の文言を直す。")
 } else say("   → 変数ラベル・選択肢・有効コードは三波で一致。調査票 PDF の目視が済めばこのままでよい。")
 say("\n2) §7.2「λ の直接の証拠は乏しい」/ §9「同一回答者の反復回顧報告の一致度の診断」(日本の成人では乏しい)")
 if (nrow(retest)) { say("   → 反復回顧報告が取れた(上の (B))。自分のデータで λ を直接推定できるので、この二文は書き換える。")
-  say("      j1_grades_retest.csv を Claude に渡す。")
+  say("      j1_grades_retest.csv の値で本文を書き換える。")
 } else say("   → 反復回顧報告は取れない。§7.2・§9 は現状のままでよい。")
 say("\n", strrep("=", 78))
 say("この 2 ファイル(j1_wording_check.txt / j1_grades_retest.csv)は個票を含まず N<10 のセルを伏せた集計値だが、")

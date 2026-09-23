@@ -1,0 +1,8 @@
+# j1 figure provenance (written by j1_make_figures.R): data inputs, drawing code and drawing environment of the PNGs in this folder
+input  j1_specs.csv         bdc6365dc0d0aa62e9be4add9785654461efbd716a62dcd48e1af863838add1f
+input  j1_unlicensed.csv    ca3a18749db7609c2d996f8b04ac3f35697de56df5e4f68fadcc50cae8aaa6cd
+input  j1_descriptives.csv  03009fcf9f872cbc64c1a02899939b64a6761d5cc825e688c5fbf1b240801043
+code   j1_fig_helpers.R     8d1ddcf25d13711470897723822cde0eec44d45b70a32bd9c9f0784a6d3c4308
+env    R_4.6.0 aarch64-apple-darwin23 ragg_1.5.2 font=Hiragino_Sans
+output j1_fig_dag.png       222583a15216b5d3e335f63cd781c929a710133ed45fcae97db3d33c71ecdf2d
+output j1_fig_specmap.png   7a2e4e2bd6c30f9b30424fc34948daccf7a49234b758ee2bf9fbf19c9efeb4f9

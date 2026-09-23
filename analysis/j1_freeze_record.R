@@ -1,7 +1,9 @@
 # j1_freeze_record.R — 正規利用者による固定版再実行の記録(知人査読第 3 回 R3-DC1)。
 # 入力ファイルの識別(名前・サイズ・SHA-256; 個票の中身は出さない)、実行コードのチェックサム、環境、
 # results/ の各出力の SHA-256、図の対応(results/ の描画・figures/ の採用版・Word 埋込画像)、変換スクリプトの照合、
-# および本文 v1.0 に転記した数値と出力の照合を 1 組にして書き出す(v1.0, 2026-09-20: 知人査読第 4 回 R4-m3)。
+# および本文 v1.1 に転記した数値と出力の照合を 1 組にして書き出す(v1.0, 2026-09-20: 知人査読第 4 回 R4-m3;
+# v1.1, 2026-09-23: 知人査読第 5 回 R5-m2 — 図の差を j1_fig_provenance.txt により「数値の入力・描画コード(ラベル)・描画環境」に分けて記録し、
+# ハッシュの不一致だけから描画環境の差と判定しない。本文の数値は v1.0 と同じ 61 値)。
 # Usage: Rscript j1_freeze_record.R <jlps_all_wide.rds> <results_dir> [<official .dta/.sav>] [<jp_combine_wide.R>]
 #   例: Rscript j1_freeze_record.R ~/Documents/JLPS_data/work_jp/jlps_all_wide.rds ../results \\
 #         ~/Documents/JLPS_data/raw/ZQ115...RQ102.dta ../../jp_combine_wide.R
@@ -81,14 +83,38 @@ for (fig in c("j1_fig_dag.png", "j1_fig_specmap.png")) {
   hr <- if (file.exists(r)) sha(r) else NA_character_; ha <- if (file.exists(a)) sha(a) else NA_character_
   say("  %-20s results/ %s", fig, if (is.na(hr)) "(absent)" else hr)
   say("  %-20s figures/ %s  %s", "", if (is.na(ha)) "(absent)" else ha,
-      if (is.na(hr) || is.na(ha)) "" else if (hr == ha) "[identical to results/]" else "[differs from results/: same aggregate inputs, different drawing environment (fonts); the adopted file is figures/]")
+      if (is.na(hr) || is.na(ha)) "" else if (hr == ha) "[identical to results/]" else "[differs from results/ -- see the provenance lines below; the adopted file is figures/]")
   for (nm in names(media)) { m <- media[[nm]]; if (is.null(m)) { say("  %-20s %s.docx: no embedded PNG found / file absent", "", nm); next }
     hit <- m[sha256 == ha]; say("  %-20s %s.docx: %s", "", nm, if (nrow(hit)) sprintf("embedded as %s [identical to figures/]", paste(hit$file, collapse = ", ")) else "!! no embedded image matches figures/ (re-render the docx from figures/ or re-run this record after the final Word save)") }
   rec[[length(rec) + 1]] <- data.table(section = "figure", item = paste0(fig, " results/"), value = NA_character_, sha256 = hr)
   rec[[length(rec) + 1]] <- data.table(section = "figure", item = paste0(fig, " figures/"), value = NA_character_, sha256 = ha)
   for (nm in names(media)) if (!is.null(media[[nm]])) { hit <- media[[nm]][sha256 == ha]; rec[[length(rec) + 1]] <- data.table(section = "figure", item = paste0(fig, " ", nm, ".docx"), value = if (nrow(hit)) paste(hit$file, collapse = ", ") else "no match", sha256 = if (nrow(hit)) ha else NA_character_) }
 }
-say("  drawing environment of figures/: see ../analysis/RUN_LOG_J1.md; both files are drawn by j1_fig_helpers.R from j1_specs.csv / j1_unlicensed.csv / j1_descriptives.csv, so a hash difference between results/ and figures/ is a rendering difference, not a data difference.")
+## v1.1 (R5-m2): decompose the results/ vs figures/ comparison with the provenance files written by j1_make_figures.R:
+## (1) data inputs (sha256 of the aggregate CSVs), (2) label text (sha256 of the drawing code j1_fig_helpers.R), (3) drawing environment.
+fig_inputs <- c("j1_specs.csv", "j1_unlicensed.csv", "j1_descriptives.csv")
+read_prov <- function(dir) { f <- file.path(dir, "j1_fig_provenance.txt"); if (!file.exists(f)) return(NULL)
+  l <- readLines(f, warn = FALSE); l <- trimws(l[!grepl("^#", l) & nzchar(trimws(l))])
+  rbindlist(lapply(strsplit(l, "\\s+"), function(x) data.table(kind = x[1], item = x[2], value = paste(x[-(1:2)], collapse = " ")))) }
+sha_or_na <- function(f) if (file.exists(f)) sha(f) else NA_character_
+cur_in <- setNames(vapply(file.path(resdir, fig_inputs), sha_or_na, ""), fig_inputs)
+cur_code <- sha_or_na(file.path(script_dir, "j1_fig_helpers.R"))
+for (nm in c("results/", "figures/")) tryCatch({
+  dir <- if (nm == "results/") resdir else figdir; p <- read_prov(dir)
+  if (is.null(p)) { say("  provenance %-9s none (no j1_fig_provenance.txt): the byte comparison alone does not show whether data, labels or rendering differ", nm)
+    rec[[length(rec) + 1]] <- data.table(section = "figure_provenance", item = nm, value = "not recorded", sha256 = NA_character_) } else {
+  pin <- p[kind == "input"]; same_in <- nrow(pin) == length(cur_in) && setequal(pin$item, fig_inputs) && isTRUE(all(pin$value == cur_in[pin$item]))
+  pcode <- p[kind == "code"]$value; same_code <- length(pcode) == 1 && isTRUE(identical(pcode, cur_code))
+  pout <- p[kind == "output"]; same_out <- nrow(pout) > 0 && isTRUE(all(vapply(seq_len(nrow(pout)), function(i) identical(pout$value[i], sha_or_na(file.path(dir, pout$item[i]))), TRUE)))
+  pe <- p[kind == "env"]; env_line <- if (nrow(pe)) paste(pe$item[1], pe$value[1]) else "(not recorded)"
+  say("  provenance %-9s data inputs %s; drawing code %s; PNGs %s; environment: %s", nm,
+      if (same_in) "= the aggregates in results/ (3 of 3 sha256)" else "!! differ from the aggregates in results/",
+      if (same_code) "= current j1_fig_helpers.R" else "!! another version of j1_fig_helpers.R",
+      if (same_out) "= those listed in the provenance" else "!! not those listed in the provenance (redrawn afterwards?)", env_line)
+  rec[[length(rec) + 1]] <- data.table(section = "figure_provenance", item = nm, value = sprintf("data=%s; code=%s; png_listed=%s; env=%s", same_in, same_code, same_out, env_line), sha256 = NA_character_) }
+}, error = function(e) { say("  provenance %-9s !! could not be read (%s)", nm, conditionMessage(e))
+  rec[[length(rec) + 1]] <<- data.table(section = "figure_provenance", item = nm, value = paste("error:", conditionMessage(e)), sha256 = NA_character_) })
+say("  reading: only when the data inputs and the drawing code agree for results/ and figures/ is a byte difference between their PNGs attributed to the drawing environment shown (R, graphics device, fonts); a hash difference alone is not taken as evidence of which of these differs.")
 ## 4c. conversion script: the executed local copy vs the shipped j1_convert_input.R (code lines compared without '##' comment lines)
 say(""); say("== 4c. conversion script: executed copy vs shipped j1_convert_input.R ==")
 ship <- file.path(script_dir, "j1_convert_input.R")
@@ -99,8 +125,8 @@ if (file.exists(conv) && file.exists(ship)) {
   say("  code lines (excluding '##' comment lines): %s", if (same) "IDENTICAL — the two files differ only in their header comments" else "!! DIFFER — record the executed version")
   rec[[length(rec) + 1]] <- data.table(section = "conversion", item = "code identical excluding ## comments", value = as.character(same), sha256 = NA_character_)
 } else say("  (executed copy %s or shipped copy %s not found; comparison skipped)", conv, ship)
-## 5. manuscript (v1.0) numbers vs outputs
-say(""); say("== 5. manuscript v1.0 numbers vs outputs (rounded to the printed precision) ==")
+## 5. manuscript (v1.1; the same 61 numbers as v1.0) numbers vs outputs
+say(""); say("== 5. manuscript v1.1 numbers vs outputs (rounded to the printed precision) ==")
 rd <- function(p) fread(file.path(resdir, p))
 chk <- list(); add <- function(label, manuscript, value, digits) chk[[length(chk) + 1]] <<- data.table(label = label, manuscript = manuscript, output = round(value, digits), match = isTRUE(all.equal(round(value, digits), manuscript)))
 tryCatch({

@@ -13,8 +13,8 @@ Unpublished manuscript (in Japanese); a preprint version may be posted separatel
 release-check records (`RELEASE_CHECK*`), which are written after the manifest.
 
 ## Checked commit and release record
-Computational commit checked against the manuscript: `4f9d2246b63e434358a51cfd7b76dcfc7b269319` — see `RELEASE_CHECK.md` (with `RELEASE_CHECK_run.log` and `RELEASE_CHECK_sessionInfo.txt` when a clean-copy run was made). Later commits change documentation and the release record only — `git diff --stat 4f9d2246b63e434358a51cfd7b76dcfc7b269319 HEAD` lists them — so the scripts, data and outputs are those of the checked commit; after any change to code or outputs the release check is rerun and this line is regenerated.
-Tag matching the manuscript version: `j1-v1.0` (the journal submission is anonymised, so there the URL and tag are given in the separate sheet, not in the manuscript body; the preprint version names this repository and tag in §5.1; §5.1 and §6(6) refer to the fixed-version tag). No third-party licensed user has re-run the JLPS analysis; real-data reproduction rests on the author's frozen rerun record (`analysis/RUN_LOG_J1.md`, `j1_freeze_record.txt`).
+Computational commit checked against the manuscript: not yet checked (a release check is run after the first publication; see `RELEASE_CHECK.md` once present)
+Tag matching the manuscript version: `j1-v1.1` (the journal submission is anonymised, so there the URL and tag are given in the separate sheet, not in the manuscript body; the preprint version names this repository and tag in §5.1; §5.1 and §6(6) refer to the fixed-version tag; the earlier tags `j1-v0.9` and `j1-v1.0` are kept unchanged -- see "Versions (tags) and what changed" below). No third-party licensed user has re-run the JLPS analysis; real-data reproduction rests on the author's frozen rerun record (`analysis/RUN_LOG_J1.md`, `j1_freeze_record.txt`).
 
 ## How to run
 1. Install R (>= 4.3) and the packages pinned in `analysis/README_J1.md` (the install command is given under "Quick start" below).
@@ -29,7 +29,7 @@ Tag matching the manuscript version: `j1-v1.0` (the journal submission is anonym
 3. No data file of the empirical section is included: the JLPS individual records are restricted and their aggregate outputs are withheld pending the disclosure check; the archive ships the code, the conversion script, a synthetic input and its expected outputs. See `analysis/README_J1.md`.
 
 ## What this archive is (J1) — read this first
-This is the archive for the Japanese-language article "何を統制すべきか――「頑健性」を候補因果グラフで分解する"
+This is the archive for the Japanese-language article "何を統制すべきか：「頑健性」を因果グラフの候補ごとに分解する"
 (*What Should We Control For? Interpreting Multiverse Analyses with Candidate Causal Graphs*), an unpublished
 manuscript. It is distinct from the general-purpose package `dagmv`
 (https://github.com/sokubo/dagmv, pinned at v0.1.3) and from the English companion paper's archive
@@ -63,8 +63,11 @@ reader can do here, and what requires a licence of their own, is stated in `anal
   outputs. Byte-identical reproduction needs the same integrated release; from an SSJDA public release this is a
   re-analysis with the same design and definitions.
 - **Figures**: `j1_make_figures.R` redraws both figures from the aggregate outputs (`j1_specs.csv`, `j1_unlicensed.csv`,
-  `j1_descriptives.csv`); the drawing environment (fonts, `ragg`) changes the PNG bytes but not the content, which is why
-  the frozen record lists the drawn, adopted and embedded copies separately.
+  `j1_descriptives.csv`) and writes `j1_fig_provenance.txt` next to them: the SHA-256 of those three inputs and of the
+  drawing code `j1_fig_helpers.R` (which fixes the label text), and the drawing environment (R, graphics device, font).
+  PNG bytes depend on the environment, so a figure is checked in three parts -- data inputs, drawing code, environment --
+  and never by a byte comparison alone: the frozen record (section 4b) does so for the copies drawn by the run, the
+  adopted copies and the images embedded in the Word manuscript, and `RELEASE_CHECK.md` for the synthetic figures.
 - **Aggregate outputs of the real data** (`results/`, `figures/`): withheld from this public archive until the
   disclosure conditions of the survey and of the data provider have been confirmed; suppression of cells below ten observations does
   not by itself authorise release. Users with data access of their own regenerate them with the sequence above.
@@ -76,10 +79,30 @@ Rscript -e 'for (p in c("data.table","dagmv","haven")) cat(p, if (requireNamespa
 cd analysis
 Rscript j1_make_synthetic.R synthetic_check/j1_synth_wide.rds           # regenerates the synthetic input (identical() to the shipped one)
 Rscript j1_jlps_application.R synthetic/j1_synth_wide.rds synthetic_check   # compare with synthetic_out/ (B = 500, seed 20260905)
+Rscript j1_make_figures.R synthetic_check synthetic_check              # the two figures and j1_fig_provenance.txt, as in synthetic_out/
 Rscript j1_templates.R                                                  # output/j1_templates_output.txt
 ```
 `RELEASE_CHECK.md` records the anonymous download of the checked commit, the manifest comparison and the clean-copy
-rerun of this synthetic sequence with a token-wise comparison against `synthetic_out/`.
+rerun of this synthetic sequence with a token-wise comparison of the CSV/TXT outputs against `synthetic_out/`; the two
+PNGs are reported there in a separate section (data inputs, drawing code, environment), not in that file count.
+
+### Versions (tags) and what changed
+- `j1-v1.1` (manuscript v1.1, 2026-09-23): **numerical code unchanged** -- the executable lines of `j1_jlps_application.R`,
+  `j1_convert_input.R`, `j1_make_synthetic.R` and `j1_templates.R` are those of `j1-v1.0` (only the header comment of
+  `j1_jlps_application.R` changed, as did that of `j1_worked_example.R`). **Source check** `j1_check_source.R`: header
+  comment and the wording of two printed instructions (checks and verdicts unchanged). **Drawing code**:
+  `j1_fig_helpers.R` and `j1_make_figures.R` also write `j1_fig_provenance.txt` (the drawing itself is unchanged).
+  **Auxiliary**: `j1_freeze_record.R` reports the figure provenance. **Outputs** in `analysis/synthetic_out/`: the 17
+  CSV/TXT result files are byte-identical to `j1-v1.0`; the two PNGs are redrawn with the current drawing code (the
+  `j1-v1.0` copies still showed the legend of `j1-v0.9`); `j1_fig_provenance.txt` is new; `j1_sessionInfo.txt` records
+  the new run. **Documentation** updated.
+- `j1-v1.0` (2026-09-20): drawing code -- legend terms in `j1_fig_helpers.R`; auxiliary -- `j1_freeze_record.R` (sections
+  4b/4c, the argument order and usage aligned with the documentation, and the manuscript check reduced from 62 to 61
+  numbers after a sentence was deleted); numerical code and CSV/TXT outputs as in `j1-v0.9`. Its synthetic PNGs had
+  not been redrawn.
+- `j1-v0.9` (2026-09-18): the first tagged version.
+
+Earlier tags are kept as they are (no tag is moved). `RELEASE_CHECK.md` names the computational commit that was checked.
 
 ## Citation
-大久保将貴 (2026)「何を統制すべきか――「頑健性」を候補因果グラフで分解する」未刊行原稿. / Okubo, S. (2026). What Should We Control For? Interpreting Multiverse Analyses with Candidate Causal Graphs. Unpublished manuscript (in Japanese).
+大久保将貴 (2026)「何を統制すべきか：「頑健性」を因果グラフの候補ごとに分解する」未刊行原稿. / Okubo, S. (2026). What Should We Control For? Interpreting Multiverse Analyses with Candidate Causal Graphs. Unpublished manuscript (in Japanese).
